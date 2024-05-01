@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ByteBills"
         tools:targetApi="31">
         <activity
-            android:name=".LogIn"
+            android:name=".Identification"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ByteBills.NoActionBar">
