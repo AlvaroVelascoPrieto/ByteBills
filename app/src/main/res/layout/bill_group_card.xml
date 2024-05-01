@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textViewBillGroupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:hint="@string/bill_group_title"/>
+
+        <TextView
+            android:id="@+id/textViewBillGroupDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewBillGroupTitle"
+            android:textSize="16sp"
+            android:hint="Short description"/>
+
+        <TextView
+            android:id="@+id/textViewBillDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewBillGroupDesc"
+            android:textSize="14sp"
+            android:hint="Last bill date"/>
+
+        <Button
+            android:id="@+id/buttonDeleteBillGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:backgroundTint="#FF1100"
+            android:textColor="@android:color/white"
+            android:layout_below="@id/textViewBillDate"
+            android:layout_alignParentEnd="true"/>
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
