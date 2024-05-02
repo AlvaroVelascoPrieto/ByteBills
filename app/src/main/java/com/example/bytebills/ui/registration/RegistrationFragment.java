@@ -16,6 +16,7 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.controller.RemoteDBHandler;
 import com.example.bytebills.databinding.FragmentRegistrationBinding;
 
@@ -61,8 +62,7 @@ public class  RegistrationFragment extends Fragment {
                                     .setInputData(data)
                                     .build();
 
-                    //TODO: dar contexto
-                    WorkManager.getInstance().getWorkInfoByIdLiveData(registerWork.getId())
+                    WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(registerWork.getId())
                         .observe(RegistrationFragment.this, status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String registerStatus = status.getOutputData().getString("status");
@@ -71,8 +71,8 @@ public class  RegistrationFragment extends Fragment {
                                 }
                             }
                         });
-                    //TODO: Dar contexto
-                    WorkManager.getInstance().enqueue(registerWork);
+
+                    WorkManager.getInstance(requireContext()).enqueue(registerWork);
                 }
 
             }
