@@ -1,5 +1,6 @@
 package com.example.bytebills.ui.registration;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class  RegistrationFragment extends Fragment {
         final Button register = binding.registerbtn;
 
         register.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("FragmentLiveDataObserve")
             @Override
             public void onClick(View v) {
                 String username = usernameTV.getText().toString();
@@ -61,7 +63,7 @@ public class  RegistrationFragment extends Fragment {
 
                     //TODO: dar contexto
                     WorkManager.getInstance().getWorkInfoByIdLiveData(registerWork.getId())
-                        .observe(this, status -> {
+                        .observe(RegistrationFragment.this, status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String registerStatus = status.getOutputData().getString("status");
                                 if (registerStatus.equals("Ok")) {
