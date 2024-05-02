@@ -1,16 +1,16 @@
-package com.example.bytebills.ui.registration;
+package com.example.bytebills.ui.mybills;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class RegistrationViewModel extends ViewModel {
+public class MyBillsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public RegistrationViewModel() {
+    public MyBillsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("bytebills>ui>home>HomeViewModel");
+        mText.setValue("This is gallery fragment");
     }
 
     public LiveData<String> getText() {

@@ -1,5 +1,10 @@
 package com.example.bytebills.ui.home;
 
+import static android.app.PendingIntent.getActivity;
+
+import static androidx.core.content.ContextCompat.startActivities;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,8 +17,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
 import com.example.bytebills.model.BillGroup;
+import com.example.bytebills.ui.billgroup.BillFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,7 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.TaskViewHolder> {
+public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.BillGroupViewHolder> {
     private final List<BillGroup> billGroupList;
     private OnDeleteClickListener onDeleteClickListener;
 
@@ -33,15 +40,13 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Task
         void onDeleteClick(int position);
     }
 
-
-
-    public static class TaskViewHolder extends RecyclerView.ViewHolder {
+    public static class BillGroupViewHolder extends RecyclerView.ViewHolder {
         TextView textViewBillGroupTitle;
         TextView textViewBillGroupDescription;
         TextView textViewLastUpdateDate;
         Button buttonDeleteBillGroup;
 
-        public TaskViewHolder(View itemView) {
+        public BillGroupViewHolder(View itemView) {
             super(itemView);
             textViewBillGroupTitle = itemView.findViewById(R.id.textViewBillGroupTitle);
             textViewBillGroupDescription = itemView.findViewById(R.id.textViewBillGroupDesc);
@@ -52,13 +57,13 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Task
 
     @NonNull
     @Override
-    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BillGroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bill_group_card, parent, false);
-        return new TaskViewHolder(view);
+        return new BillGroupViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TaskViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull BillGroupViewHolder holder, @SuppressLint("RecyclerView") int position) {
         BillGroup currentBillGroup = billGroupList.get(position);
 
         holder.textViewBillGroupTitle.setText(currentBillGroup.getTitle());
@@ -75,7 +80,6 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Task
             holder.textViewLastUpdateDate.setText("Invalid date format");
         }
 
-
         // Set click listener for delete button
         holder.buttonDeleteBillGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +95,8 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Task
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Call onDeleteClick method to handle task deletion
-                        if (onDeleteClickListener != null) {
-                            onDeleteClickListener.onDeleteClick(position);
-                        }
+                        final int id = currentBillGroup.getId();
+                        //TODO: delete billgroup with id from DB
                     }
                 });
                 String cancel = v.getContext().getString(R.string.cancel);
@@ -106,6 +109,15 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Task
                 });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Open fragment for BillGroupDisplay
+                Intent i = new Intent(holder.itemView.getContext(), BillFragment.class);
+                startActivity(holder.itemView.getContext(),i, null);
             }
         });
     }

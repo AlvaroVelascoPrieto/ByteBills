@@ -2,10 +2,10 @@ package com.example.bytebills.ui.home;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +14,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.bytebills.databinding.BillGroupCardBinding;
+import com.example.bytebills.R;
 import com.example.bytebills.databinding.FragmentHomeBinding;
 import com.example.bytebills.model.BillGroup;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -44,9 +43,7 @@ public class HomeFragment extends Fragment {
         recyclerView = binding.recyclerViewBillGroups;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-
-        // Fetch tasks from database
+        //TODO: Fetch tasks from DB
         billGroupList = new ArrayList<BillGroup>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             billGroupList.add(new BillGroup(0, "BILL GROUP TITLE", "Bill Group Description", LocalDateTime.now().toString()));
@@ -55,6 +52,9 @@ public class HomeFragment extends Fragment {
         // Set up RecyclerView adapter
         adapter = new BillGroupAdapter(billGroupList);
         recyclerView.setAdapter(adapter);
+
+        recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
+
 
         return root;
     }

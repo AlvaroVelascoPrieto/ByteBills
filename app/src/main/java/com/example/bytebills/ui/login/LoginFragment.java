@@ -41,6 +41,7 @@ public class LoginFragment extends Fragment {
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: Check user credentials in DB
                 if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
                     //correct
                     Intent i = new Intent(getActivity(), MainActivity.class);

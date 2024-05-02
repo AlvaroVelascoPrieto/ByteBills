@@ -20,8 +20,6 @@ public class  RegistrationFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        RegistrationViewModel homeViewModel =
-                new ViewModelProvider(this).get(RegistrationViewModel.class);
 
         binding = FragmentRegistrationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
