@@ -11,7 +11,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.example.bytebills.controller.RemoteDBHandler;
 import com.example.bytebills.databinding.FragmentRegistrationBinding;
 
 public class  RegistrationFragment extends Fragment {
@@ -38,11 +42,35 @@ public class  RegistrationFragment extends Fragment {
                 String password = passwordTV.getText().toString();
                 String password2 = password2TV.getText().toString();
                 if (username.isEmpty() || email.isEmpty() || password.isEmpty() || password2.isEmpty()){
-                    Toast.makeText(getActivity(), "Please enter all the data..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter all the data...", Toast.LENGTH_SHORT).show();
                 }else if (!password.equals(password2)){
                     Toast.makeText(getActivity(), "Passwords do not match.", Toast.LENGTH_SHORT).show();
-                }else{
-                    //TODO: DB async request
+                }else{ //Peticion asincrona al servidor remoto con la base de datos
+
+                    Data data = new Data.Builder()
+                            .putString("tag", "Register")
+                            .putString("username", username)
+                            .putString("email", email)
+                            .putString("password", password)
+                            .build();
+
+                    OneTimeWorkRequest registerWork =
+                            new OneTimeWorkRequest.Builder(RemoteDBHandler.class)
+                                    .setInputData(data)
+                                    .build();
+
+                    //TODO: dar contexto
+                    WorkManager.getInstance().getWorkInfoByIdLiveData(registerWork.getId())
+                        .observe(this, status -> {
+                            if (status != null && status.getState().isFinished()) {
+                                String registerStatus = status.getOutputData().getString("status");
+                                if (registerStatus.equals("Ok")) {
+                                    //TODO: registrado correctamente
+                                }
+                            }
+                        });
+                    //TODO: Dar contexto
+                    WorkManager.getInstance().enqueue(registerWork);
                 }
 
             }
