@@ -60,10 +60,14 @@ public class RemoteDBHandler extends Worker {
         HttpURLConnection conn = null;
 
         JSONObject json = new JSONObject();
-        json.put("username", username);
-        json.put("password", password);
-        json.put("email", email);
-        Log.d(TAG, "register JSON created: " + json.toString());
+        try {
+            json.put("username", username);
+            json.put("password", password);
+            json.put("email", email);
+            Log.d(TAG, "register JSON created: " + json.toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         //Este try catch es el intento de hacer una llamada HTTP al servidor remoto con los datos introducidos por el usuario
         //en forma de objeto JSON
@@ -109,7 +113,9 @@ public class RemoteDBHandler extends Worker {
 
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
