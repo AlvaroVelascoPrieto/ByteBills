@@ -106,7 +106,11 @@ public class RemoteDBHandler extends Worker {
                 JSONObject jsonResponse = (JSONObject) jsonParser.parse(result.toString());
 
                 if (jsonResponse.get("status").equals("Ok")) {
-                    return Result.success();
+                    Data data = new Data.Builder()
+                        .putString("status", "Ok")
+                        .build();
+
+                    return Result.success(data);
                 }
             }
 

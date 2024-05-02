@@ -61,6 +61,16 @@ public class  RegistrationFragment extends Fragment {
                                     .setInputData(data)
                                     .build();
 
+                    //TODO: dar contexto
+                    WorkManager.getInstance().getWorkInfoByIdLiveData(registerWork.getId())
+                        .observe(this, status -> {
+                            if (status != null && status.getState().isFinished()) {
+                                String registerStatus = status.getOutputData().getString("status");
+                                if (registerStatus.equals("Ok")) {
+                                    //TODO: registrado correctamente
+                                }
+                            }
+                        });
                     //TODO: Dar contexto
                     WorkManager.getInstance().enqueue(registerWork);
                 }
