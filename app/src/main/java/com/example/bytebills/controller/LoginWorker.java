@@ -24,9 +24,7 @@ public class LoginWorker extends Worker {
         String password = data.getString("password");
 
         try {
-            //TODO: Decide between email and username for log in.
             JSONObject json = new JSONObject();
-            json.put("username", username);
             json.put("email", email);
             json.put("password", password);
 
