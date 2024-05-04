@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
 }
 
+
 android {
     namespace 'com.example.bytebills'
     compileSdk 34
@@ -19,7 +20,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -41,9 +42,11 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.6.0'
     implementation 'androidx.navigation:navigation-ui:2.6.0'
     implementation 'androidx.work:work-runtime:2.9.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation ('com.googlecode.json-simple:json-simple:1.1.1')
         { exclude group: 'junit', module: 'junit'}
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 }

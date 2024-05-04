@@ -19,7 +19,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.bytebills.R;
 import com.example.bytebills.model.BillGroup;
-import com.example.bytebills.ui.billgroup.BillFragment;
+import com.example.bytebills.ui.billgroup.StockValueFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,7 +115,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
             @Override
             public void onClick(View v) {
                 //TODO: Open fragment for StockDisplay
-                Intent i = new Intent(holder.itemView.getContext(), BillFragment.class);
+                Intent i = new Intent(holder.itemView.getContext(), StockValueFragment.class);
                 startActivity(holder.itemView.getContext(),i, null);
             }
         });

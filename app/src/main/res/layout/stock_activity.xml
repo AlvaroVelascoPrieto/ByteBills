@@ -10,10 +10,22 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="210dp"
+        android:layout_height="20dp"
         android:text="GRAFICO DE SESION"
         android:textColor="@color/material_dynamic_primary0"
         android:textStyle="bold" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/reportingChart"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:elevation="10dp"
+        />
     <!--title of the horizontal listing-->
     <TextView
         android:layout_width="wrap_content"
@@ -26,7 +38,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="80dp" />
 
     <!--title of the vertical listing-->
     <TextView
@@ -41,9 +53,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVertical"
         android:layout_width="match_parent"
-        android:layout_height="190dp" />
+        android:layout_height="240dp" />
 
     <include
         layout="@layout/result_card"
-        android:layout_height="wrap_content" />
+        />
 </LinearLayout>
