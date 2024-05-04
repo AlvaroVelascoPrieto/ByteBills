@@ -35,6 +35,15 @@ def login_user():
     else:
         return jsonify({'status': 'Error'}), 200
 
+@app.route('/user-stocks', methods=['GET'])
+def get_user_stocks():
+    data = request.get_json()
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM stock_transaction WHERE username = ", (data['username']))
+    stocks = cursor.fetchall()
+    return jsonify(stocks), 200
+
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     db = get_db_connection()
