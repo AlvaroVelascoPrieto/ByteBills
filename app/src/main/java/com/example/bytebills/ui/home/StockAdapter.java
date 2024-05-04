@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
 import com.example.bytebills.model.BillGroup;
 import com.example.bytebills.ui.billgroup.BillFragment;
@@ -28,11 +27,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.BillGroupViewHolder> {
+public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupViewHolder> {
     private final List<BillGroup> billGroupList;
     private OnDeleteClickListener onDeleteClickListener;
 
-    public BillGroupAdapter(List<BillGroup> billGroupList) {
+    public StockAdapter(List<BillGroup> billGroupList) {
         this.billGroupList = billGroupList;
     }
 
@@ -41,24 +40,24 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Bill
     }
 
     public static class BillGroupViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewBillGroupTitle;
-        TextView textViewBillGroupDescription;
+        TextView textViewStockName;
+        TextView textViewStockId;
         TextView textViewLastUpdateDate;
-        Button buttonDeleteBillGroup;
+        Button buttonDeleteStock;
 
         public BillGroupViewHolder(View itemView) {
             super(itemView);
-            textViewBillGroupTitle = itemView.findViewById(R.id.textViewBillGroupTitle);
-            textViewBillGroupDescription = itemView.findViewById(R.id.textViewBillGroupDesc);
-            textViewLastUpdateDate = itemView.findViewById(R.id.textViewBillDate);
-            buttonDeleteBillGroup = itemView.findViewById(R.id.buttonDeleteBillGroup);
+            textViewStockName = itemView.findViewById(R.id.textViewStockName);
+            textViewStockId = itemView.findViewById(R.id.textViewStockId);
+            textViewLastUpdateDate = itemView.findViewById(R.id.textViewUpdateDate);
+            buttonDeleteStock = itemView.findViewById(R.id.buttonDeleteStock);
         }
     }
 
     @NonNull
     @Override
     public BillGroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bill_group_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.stock_card, parent, false);
         return new BillGroupViewHolder(view);
     }
 
@@ -66,8 +65,8 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Bill
     public void onBindViewHolder(@NonNull BillGroupViewHolder holder, @SuppressLint("RecyclerView") int position) {
         BillGroup currentBillGroup = billGroupList.get(position);
 
-        holder.textViewBillGroupTitle.setText(currentBillGroup.getTitle());
-        holder.textViewBillGroupDescription.setText(currentBillGroup.getDescription());
+        holder.textViewStockName.setText(currentBillGroup.getTitle());
+        holder.textViewStockId.setText(currentBillGroup.getDescription());
 
         // Format and display the due date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -81,7 +80,7 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Bill
         }
 
         // Set click listener for delete button
-        holder.buttonDeleteBillGroup.setOnClickListener(new View.OnClickListener() {
+        holder.buttonDeleteStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Show confirmation dialog before deleting the task
@@ -96,7 +95,7 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Bill
                     public void onClick(DialogInterface dialog, int which) {
                         // Call onDeleteClick method to handle task deletion
                         final int id = currentBillGroup.getId();
-                        //TODO: delete billgroup with id from DB
+                        //TODO: delete stock with id from DB
                     }
                 });
                 String cancel = v.getContext().getString(R.string.cancel);
@@ -115,7 +114,7 @@ public class BillGroupAdapter extends RecyclerView.Adapter<BillGroupAdapter.Bill
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Open fragment for BillGroupDisplay
+                //TODO: Open fragment for StockDisplay
                 Intent i = new Intent(holder.itemView.getContext(), BillFragment.class);
                 startActivity(holder.itemView.getContext(),i, null);
             }

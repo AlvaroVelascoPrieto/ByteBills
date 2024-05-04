@@ -24,7 +24,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
-    private BillGroupAdapter adapter;
+    private StockAdapter adapter;
     private List<BillGroup> billGroupList;
     private FragmentHomeBinding binding;
 
@@ -36,8 +36,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         // Initialize RecyclerView
         recyclerView = binding.recyclerViewBillGroups;
@@ -46,11 +44,11 @@ public class HomeFragment extends Fragment {
         //TODO: Fetch tasks from DB
         billGroupList = new ArrayList<BillGroup>();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            billGroupList.add(new BillGroup(0, "BILL GROUP TITLE", "Bill Group Description", LocalDateTime.now().toString()));
+            billGroupList.add(new BillGroup(0, "TESLA", "TSLA", LocalDateTime.now().toString()));
         }
 
         // Set up RecyclerView adapter
-        adapter = new BillGroupAdapter(billGroupList);
+        adapter = new StockAdapter(billGroupList);
         recyclerView.setAdapter(adapter);
 
         recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));

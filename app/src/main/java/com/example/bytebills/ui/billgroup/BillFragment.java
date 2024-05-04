@@ -21,7 +21,7 @@ public class BillFragment extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bill_group_activity);
+        setContentView(R.layout.stock_activity);
 
         rvVertical = (RecyclerView) findViewById(R.id.rvVertical);
         rvHorizontal = (RecyclerView) findViewById(R.id.rvHorizontal);

@@ -3,15 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_alignParentBottom="true"
     android:background="#30000000"
+    android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:text="GRAFICO DE SESION"
+        android:textColor="@color/material_dynamic_primary0"
+        android:textStyle="bold" />
     <!--title of the horizontal listing-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Horizontal Listing"
+        android:text="Dividends"
         android:textColor="@color/material_dynamic_primary0"
         android:textStyle="bold" />
 
@@ -19,14 +26,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="160dp" />
+        android:layout_height="140dp" />
 
     <!--title of the vertical listing-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Vertical Listing"
+        android:text="Purchases"
         android:textColor="@color/material_dynamic_primary0"
         android:textStyle="bold" />
 
@@ -34,5 +41,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvVertical"
         android:layout_width="match_parent"
+        android:layout_height="190dp" />
+
+    <include
+        layout="@layout/result_card"
         android:layout_height="wrap_content" />
 </LinearLayout>
