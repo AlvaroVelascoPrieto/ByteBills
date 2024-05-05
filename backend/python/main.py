@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import mysql.connector
+import financeData as fd
 
 app = Flask(__name__)
 
@@ -69,5 +70,10 @@ def delete_user(user_id):
     db.commit()
     return '', 204
 
+@app.route('/stock/<str:stock_id>', methods=['GET'])
+def get_user(stock_id):
+    res = fd.get_value_data("TSLA")
+    return jsonify(res)
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=6000)

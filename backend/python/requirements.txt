@@ -1,2 +1,7 @@
 Flask
 mysql-connector-python
+yfinance
+requests
+requests_html
+pandas
+lxml_html_clean
