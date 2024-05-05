@@ -17,6 +17,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.bytebills.MainActivity;
+import com.example.bytebills.controller.RegisterWorker;
 import com.example.bytebills.controller.RemoteDBHandler;
 import com.example.bytebills.databinding.FragmentRegistrationBinding;
 
@@ -51,14 +52,13 @@ public class  RegistrationFragment extends Fragment {
                 }else{ //Peticion asincrona al servidor remoto con la base de datos
 
                     Data data = new Data.Builder()
-                            .putString("tag", "Register")
                             .putString("username", username)
                             .putString("email", email)
                             .putString("password", password)
                             .build();
 
                     OneTimeWorkRequest registerWork =
-                            new OneTimeWorkRequest.Builder(RemoteDBHandler.class)
+                            new OneTimeWorkRequest.Builder(RegisterWorker.class)
                                     .setInputData(data)
                                     .build();
 

@@ -3,6 +3,7 @@ package com.example.bytebills.controller;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -22,55 +23,16 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
-public class RemoteDBHandler extends Worker {
+public class RemoteDBHandler {
 
     private String remoteServerDirection = "http://ip:5000";
     private String TAG = "RemoteDBHandler";
 
-    public RemoteDBHandler(Context context, WorkerParameters workerParameters) {
-        super(context, workerParameters);
+    public RemoteDBHandler() {
     }
 
-    //Este metodo es un dispatcher, es una tarea asincrona que deriva en una interaccion con la base de datos
-    //segun el valor del tag
-    public Result doWork() {
-        Data data = getInputData();
-        String tag = data.getString("tag");
-
-        if (tag != null) {
-            switch (tag) {
-                case "Register":
-                    String username = data.getString("username");
-                    String email = data.getString("email");
-                    String password = data.getString("password");
-                    return registerUser(username, email, password);
-                case "Login":
-                    break;
-            }
-        }
-
-        return Result.failure();
-    }
-
-    private Result registerUser(String username, String password, String email) {
-
-        Log.d(TAG, "registerUser entered");
-        remoteServerDirection += "/register";
-
+    public String post(String endpoint, @NonNull JSONObject json) { remoteServerDirection += endpoint;
         HttpURLConnection conn = null;
-
-        JSONObject json = new JSONObject();
-        try {
-            json.put("username", username);
-            json.put("password", password);
-            json.put("email", email);
-            Log.d(TAG, "register JSON created: " + json.toString());
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        //Este try catch es el intento de hacer una llamada HTTP al servidor remoto con los datos introducidos por el usuario
-        //en forma de objeto JSON
 
         try {
             conn = (HttpURLConnection) new URL(remoteServerDirection).openConnection();
@@ -87,7 +49,7 @@ public class RemoteDBHandler extends Worker {
 
             int status = conn.getResponseCode();
             String message = conn.getResponseMessage();
-            Log.d(TAG, "Response register: " + status + " " + message);
+            Log.d(TAG, "Response " + endpoint + ": " + status + " " + message);
 
             if (status == 200) {
                 BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
@@ -102,28 +64,24 @@ public class RemoteDBHandler extends Worker {
                 }
                 inputStream.close();
 
-                JSONParser jsonParser = new JSONParser();
-                JSONObject jsonResponse = (JSONObject) jsonParser.parse(result.toString());
+                JSONParser parser = new JSONParser();
+                JSONObject responseJSON = (JSONObject) parser.parse(result.toString());
 
-                if (jsonResponse.get("status").equals("Ok")) {
-                    Data data = new Data.Builder()
-                        .putString("status", "Ok")
-                        .build();
-
-                    return Result.success(data);
-                }
+                return responseJSON.get("status").toString();
             }
-
 
         } catch (ProtocolException e) {
             throw new RuntimeException(e);
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        return Result.failure();
+
+        return "Error";
     }
 
 }

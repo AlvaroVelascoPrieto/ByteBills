@@ -11,14 +11,38 @@ def get_db_connection():
         database="bytebills"
     )
 
-@app.route('/users', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def create_user():
     data = request.get_json()
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO users (name, email) VALUES (%s, %s)", (data['name'], data['email']))
-    db.commit()
-    return jsonify({'id': cursor.lastrowid}), 201
+    cursor.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
+    try:
+        db.commit()
+        return jsonify({'status': 'Ok'}), 200
+    except:
+        return jsonify({'status': 'Error'}), 200
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    data = request.get_json()
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (data['email'], data['password']))
+    user = cursor.fetchone()
+    if user:
+        return jsonify({'status': 'Ok'}), 200
+    else:
+        return jsonify({'status': 'Error'}), 200
+
+@app.route('/user-stocks', methods=['GET'])
+def get_user_stocks():
+    data = request.get_json()
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM stock_transaction WHERE username = ", (data['username']))
+    stocks = cursor.fetchall()
+    return jsonify(stocks), 200
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
