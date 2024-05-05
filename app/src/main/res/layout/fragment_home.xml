@@ -13,11 +13,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBillGroups"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="530dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <include layout="@layout/result_card"
-        />
+        <include
+            android:id="@+id/result_card"
+            layout="@layout/result_card" />
+
 
     </LinearLayout>
 </RelativeLayout>

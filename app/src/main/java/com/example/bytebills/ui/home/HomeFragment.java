@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bytebills.R;
 import com.example.bytebills.databinding.FragmentHomeBinding;
 import com.example.bytebills.model.BillGroup;
+import com.example.bytebills.ui.addStock.AddStockFragment;
+import com.example.bytebills.ui.registration.RegistrationFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,6 +57,16 @@ public class HomeFragment extends Fragment {
 
         recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
 
+        binding.resultCard.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddStockFragment newAddStockFragment = new AddStockFragment();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newAddStockFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         return root;
     }

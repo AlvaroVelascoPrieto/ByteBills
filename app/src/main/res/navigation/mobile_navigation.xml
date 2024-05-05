@@ -22,9 +22,5 @@
         android:name="com.example.bytebills.ui.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_slideshow" />
-    <fragment
-        android:id="@+id/nav_stock_value"
-        android:name="com.example.bytebills.ui.stockvalue.StockValueFragment"
-        android:label="@string/menu_stockvalue"
-        tools:layout="@layout/fragment_stockvalue" />
+
 </navigation>

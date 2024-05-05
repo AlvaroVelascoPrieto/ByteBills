@@ -1,5 +1,8 @@
 package com.example.bytebills.ui.stockvalue;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
@@ -7,18 +10,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.bytebills.R;
-import com.example.bytebills.databinding.FragmentHomeBinding;
-import com.example.bytebills.databinding.FragmentLoginBinding;
-import com.example.bytebills.databinding.FragmentStockvalueBinding;
+import com.example.bytebills.ui.addTransaction.AddTransactionFragment;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
@@ -29,13 +30,14 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StockValueFragment extends Fragment {
+public class StockValueActivity extends AppCompatActivity {
     private RecyclerView rvVertical, rvHorizontal;
     private ArrayList<String> dividendDateList;
     private ArrayList<String> dividendValueList;
@@ -52,15 +54,15 @@ public class StockValueFragment extends Fragment {
     private DividenAdapter horizontalAdapter;
     LineChart volumeReportChart;
 
-    private FragmentStockvalueBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
 
 
-        binding = FragmentStockvalueBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-        volumeReportChart = binding.reportingChart;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.fragment_stockvalue);
+
+        FloatingActionButton add = findViewById(R.id.fab);
+        volumeReportChart = findViewById(R.id.reportingChart);
         ArrayList<String> dates = new ArrayList<>();
         dates.add("2024-05-03");
         dates.add("2024-05-04");
@@ -76,8 +78,8 @@ public class StockValueFragment extends Fragment {
 
 
 
-        rvVertical = binding.rvVertical;
-        rvHorizontal = binding.rvHorizontal;
+        rvVertical = findViewById(R.id.rvVertical);
+        rvHorizontal = findViewById(R.id.rvHorizontal);
         dividendDateList = new ArrayList<>();
         dividendValueList = new ArrayList<>();
         dividendPercentageList = new ArrayList<>();
@@ -108,8 +110,8 @@ public class StockValueFragment extends Fragment {
         verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);
 
         //________initialize layout managers
-        mLayoutManagerHorizontal = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mLayoutManagerVertical = new LinearLayoutManager(getContext());
+        mLayoutManagerHorizontal = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManagerVertical = new LinearLayoutManager(this);
 
         //________set layout managers
         rvHorizontal.setLayoutManager(mLayoutManagerHorizontal);
@@ -118,7 +120,17 @@ public class StockValueFragment extends Fragment {
         //________set adapters
         rvHorizontal.setAdapter(horizontalAdapter);
         rvVertical.setAdapter(verticalAdapter);
-        return root;
+
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(StockValueActivity.this, AddTransactionFragment.class);
+                startActivity(i);
+            }
+        });
+
+
     }
 
     public void renderData(ArrayList<String> dates, ArrayList<Double> allAmounts) {
@@ -240,9 +252,4 @@ public class StockValueFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }

@@ -4,27 +4,43 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#D2FFFFFF">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textViewStockName"
+        <LinearLayout
+            android:id="@+id/LLTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:hint="@string/final_balance"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
 
+            <TextView
+                android:id="@+id/textViewStockName"
+                android:layout_width="272dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/final_balance"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                app:srcCompat="@drawable/baseline_add_24" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/LLValueDiff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/textViewStockName"
+            android:layout_below="@id/LLTitle"
             android:weightSum="2">
 
             <TextView

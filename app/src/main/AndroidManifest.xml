@@ -29,7 +29,12 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.ByteBills.NoActionBar"/>
         <activity
-            android:name=".ui.stockvalue.StockValueFragment"
+            android:name=".ui.stockvalue.StockValueActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ByteBills.NoActionBar"/>
+        <activity
+            android:name=".ui.addTransaction.AddTransactionFragment"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ByteBills.NoActionBar"/>
