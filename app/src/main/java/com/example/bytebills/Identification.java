@@ -21,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class Identification extends AppCompatActivity {
     private IdentificationBinding binding;
-    private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

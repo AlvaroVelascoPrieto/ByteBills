@@ -6,6 +6,8 @@ import static androidx.core.content.ContextCompat.startActivities;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,12 +16,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.bytebills.R;
 import com.example.bytebills.model.BillGroup;
-import com.example.bytebills.ui.billgroup.StockValueFragment;
+import com.example.bytebills.ui.registration.RegistrationFragment;
+import com.example.bytebills.ui.stockvalue.StockValueFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,8 +120,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
             @Override
             public void onClick(View v) {
                 //TODO: Open fragment for StockDisplay
-                Intent i = new Intent(holder.itemView.getContext(), StockValueFragment.class);
-                startActivity(holder.itemView.getContext(),i, null);
+                StockValueFragment newStockValueFragment = new StockValueFragment();
+                FragmentActivity act = (FragmentActivity) holder.itemView.getContext();
+                FragmentTransaction fragmentTransaction = act.getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newStockValueFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                //Intent i = new Intent(holder.itemView.getContext(), StockValueFragment.class);
+                //startActivity(holder.itemView.getContext(),i, null);
             }
         });
     }

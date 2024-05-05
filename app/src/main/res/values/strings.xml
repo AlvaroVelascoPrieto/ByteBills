@@ -23,4 +23,6 @@
     <string name="final_balance">FINAL BALANCE</string>
     <string name="value_diff">Value Diff.</string>
     <string name="percent_diff">Percent Diff.</string>
+    <string name="menu_stockvalue">Stock Value</string>
+    <string name="sesion_graph">SESSION GRAPH</string>
 </resources>

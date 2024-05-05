@@ -1,16 +1,24 @@
-package com.example.bytebills.ui.billgroup;
+package com.example.bytebills.ui.stockvalue;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bytebills.R;
+import com.example.bytebills.databinding.FragmentHomeBinding;
+import com.example.bytebills.databinding.FragmentLoginBinding;
+import com.example.bytebills.databinding.FragmentStockvalueBinding;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
@@ -27,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StockValueFragment extends AppCompatActivity {
+public class StockValueFragment extends Fragment {
     private RecyclerView rvVertical, rvHorizontal;
     private ArrayList<String> dividendDateList;
     private ArrayList<String> dividendValueList;
@@ -44,11 +52,15 @@ public class StockValueFragment extends AppCompatActivity {
     private DividenAdapter horizontalAdapter;
     LineChart volumeReportChart;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.stock_activity);
-        volumeReportChart = findViewById(R.id.reportingChart);
+    private FragmentStockvalueBinding binding;
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+
+        binding = FragmentStockvalueBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        volumeReportChart = binding.reportingChart;
         ArrayList<String> dates = new ArrayList<>();
         dates.add("2024-05-03");
         dates.add("2024-05-04");
@@ -64,8 +76,8 @@ public class StockValueFragment extends AppCompatActivity {
 
 
 
-        rvVertical = (RecyclerView) findViewById(R.id.rvVertical);
-        rvHorizontal = (RecyclerView) findViewById(R.id.rvHorizontal);
+        rvVertical = binding.rvVertical;
+        rvHorizontal = binding.rvHorizontal;
         dividendDateList = new ArrayList<>();
         dividendValueList = new ArrayList<>();
         dividendPercentageList = new ArrayList<>();
@@ -96,8 +108,8 @@ public class StockValueFragment extends AppCompatActivity {
         verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);
 
         //________initialize layout managers
-        mLayoutManagerHorizontal = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mLayoutManagerVertical = new LinearLayoutManager(this);
+        mLayoutManagerHorizontal = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mLayoutManagerVertical = new LinearLayoutManager(getContext());
 
         //________set layout managers
         rvHorizontal.setLayoutManager(mLayoutManagerHorizontal);
@@ -106,6 +118,7 @@ public class StockValueFragment extends AppCompatActivity {
         //________set adapters
         rvHorizontal.setAdapter(horizontalAdapter);
         rvVertical.setAdapter(verticalAdapter);
+        return root;
     }
 
     public void renderData(ArrayList<String> dates, ArrayList<Double> allAmounts) {
@@ -225,5 +238,11 @@ public class StockValueFragment extends AppCompatActivity {
 
             volumeReportChart.setData(data);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
