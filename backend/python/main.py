@@ -70,10 +70,10 @@ def delete_user(user_id):
     db.commit()
     return '', 204
 
-@app.route('/stock/<str:stock_id>', methods=['GET'])
-def get_user(stock_id):
+@app.route('/stock/<stock_id>', methods=['GET'])
+def get_stock(stock_id):
     res = fd.get_value_data("TSLA")
     return jsonify(res)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=6000)
+    app.run(debug=True, host="0.0.0.0",port=6000)
