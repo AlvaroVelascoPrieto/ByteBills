@@ -74,8 +74,17 @@ public class LoginFragment extends Fragment {
                             .observe(LoginFragment.this, status -> {
                                 if (status != null && status.getState().isFinished()) {
                                     String loginStatus = status.getOutputData().getString("status");
-                                    if (loginStatus.equals("Ok")) {
-                                        //TODO: identificado correctamente
+                                    try {
+                                        if (loginStatus.equals("Ok")) {
+                                            Intent i = new Intent(getActivity(), MainActivity.class);
+                                            i.putExtra("username", username.getText().toString());
+                                            startActivity(i);
+                                        } else {
+                                            Toast.makeText(getActivity(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getActivity(), "Network error, try again", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
