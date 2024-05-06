@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class RemoteDBHandler {
 
-    private String remoteServerDirection = "http://34.175.101.59:5000";
+    private String remoteServerDirection = "http://34.175.101.59:5000/";
     private String TAG = "RemoteDBHandler";
 
     public RemoteDBHandler() {
