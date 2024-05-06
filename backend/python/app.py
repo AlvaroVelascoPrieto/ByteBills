@@ -17,7 +17,7 @@ def create_user():
     data = request.get_json()
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
+    cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
     try:
         db.commit()
         return jsonify({'status': 'Ok'}), 200

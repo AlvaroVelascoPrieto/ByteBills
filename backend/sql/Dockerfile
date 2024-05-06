@@ -1,6 +1,6 @@
 FROM mysql:8.0.28
 
-ADD init.sql /docker-entrypoint-initdb.d
+ADD init.sql /docker-entrypoint-initdb.d/init.sql
 
 ENV MYSQL_ROOT_PASSWORD=root
 ENV MYSQL_DATABASE=bytebills
