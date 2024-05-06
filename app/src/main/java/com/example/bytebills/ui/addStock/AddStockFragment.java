@@ -43,7 +43,10 @@ public class AddStockFragment extends Fragment {
         addstockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String username = getArguments().getString("username");
+                if (username != null) {
 
+                }
                 //TODO: Add stock to user in DB
             }
 
