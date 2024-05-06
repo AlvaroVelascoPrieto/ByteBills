@@ -71,6 +71,7 @@ public class RemoteDBHandler {
             }
 
         } catch (ProtocolException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
