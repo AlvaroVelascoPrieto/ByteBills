@@ -6,4 +6,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "main.py"]
+CMD ["flask", "run", "-h", "0.0.0.0"]

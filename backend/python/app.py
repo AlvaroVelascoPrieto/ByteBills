@@ -75,5 +75,6 @@ def get_stock(stock_id):
     res = fd.get_value_data("TSLA")
     return jsonify(res)
 
-if __name__ == '__main__':
-    app.run(debug=True, host="0.0.0.0",port=6000)
+@app.route('/', methods=['GET'])
+def hello():
+    return jsonify({'message': 'Hello World'})

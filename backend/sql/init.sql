@@ -4,7 +4,7 @@ USE bytebills;
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS stocks (
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS stock_transaction (
     sell_price DECIMAL(10, 2),
     sell_timestamp TIMESTAMP,
     FOREIGN KEY (user) REFERENCES users(username),
-    FOREIGN KEY (stock) REFERENCES stocks(symbol)
+    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
 );
 
 CREATE TABLE IF NOT EXISTS crypto_transaction (
@@ -41,5 +41,5 @@ CREATE TABLE IF NOT EXISTS crypto_transaction (
     sold BOOLEAN NOT NULL DEFAULT FALSE,
     sell_timestamp TIMESTAMP,
     FOREIGN KEY (user) REFERENCES users(username),
-    FOREIGN KEY (crypto) REFERENCES crypto(symbol)
+    FOREIGN KEY (crypto_symbol) REFERENCES crypto(symbol)
 );
