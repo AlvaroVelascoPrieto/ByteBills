@@ -7,15 +7,14 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 public class LoginWorker extends Worker {
 
     public LoginWorker(Context context, WorkerParameters workerParameters) {
         super(context, workerParameters);
     }
-    public ListenableWorker.Result doWork() {
+    public Result doWork() {
         Data data = getInputData();
         RemoteDBHandler dbHandler = new RemoteDBHandler();
 
@@ -39,8 +38,9 @@ public class LoginWorker extends Worker {
                 return ListenableWorker.Result.failure();
             }
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure();
         }
     }
 }

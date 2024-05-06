@@ -1,6 +1,7 @@
 package com.example.bytebills.ui.registration;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +12,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.bytebills.MainActivity;
 import com.example.bytebills.controller.RegisterWorker;
-import com.example.bytebills.controller.RemoteDBHandler;
 import com.example.bytebills.databinding.FragmentRegistrationBinding;
 
 public class  RegistrationFragment extends Fragment {
@@ -66,9 +65,17 @@ public class  RegistrationFragment extends Fragment {
                         .observe(RegistrationFragment.this, status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String registerStatus = status.getOutputData().getString("status");
-                                if (registerStatus.equals("Ok")) {
-                                    //TODO: registrado correctamente
+                                try {
+                                    if (registerStatus.equals("Ok")) {
+                                        //TODO: registrado correctamente
+                                        Intent i = new Intent(getActivity(), MainActivity.class);
+                                        i.putExtra("username", username);
+                                        startActivity(i);
+                                    }
+                                } catch (NullPointerException e) {
+                                    Toast.makeText(getActivity(), "An unexpected error ocurred, try again later", Toast.LENGTH_SHORT).show();
                                 }
+
                             }
                         });
 

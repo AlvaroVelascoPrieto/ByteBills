@@ -7,8 +7,7 @@ import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 public class RegisterWorker extends Worker {
 
@@ -40,8 +39,9 @@ public class RegisterWorker extends Worker {
                 return Result.failure();
             }
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failure();
         }
     }
 }

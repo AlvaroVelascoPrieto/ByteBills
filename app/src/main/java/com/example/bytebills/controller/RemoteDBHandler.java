@@ -8,8 +8,7 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -76,8 +75,6 @@ public class RemoteDBHandler {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 

@@ -1,5 +1,6 @@
 package com.example.bytebills.ui.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +16,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.bytebills.Identification;
 import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
+import com.example.bytebills.controller.LoginWorker;
+import com.example.bytebills.controller.RegisterWorker;
 import com.example.bytebills.databinding.FragmentHomeBinding;
 import com.example.bytebills.databinding.FragmentLoginBinding;
 import com.example.bytebills.ui.registration.RegistrationFragment;
@@ -39,17 +45,44 @@ public class LoginFragment extends Fragment {
         final Button signupbtn = binding.signupbtn;
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("FragmentLiveDataObserve")
             @Override
             public void onClick(View v) {
                 //TODO: Check user credentials in DB
-                if(username.getText().toString().equals("admin") && password.getText().toString().equals("admin")){
-                    //correct
+                String usernameStr = username.getText().toString();
+                String passwordStr = password.getText().toString();
+
+                if(usernameStr.equals("admin") && passwordStr.equals("admin")){
+                    //ADMIN
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     i.putExtra("username", username.getText().toString());
                     startActivity(i);
-                }else
-                    //incorrect
-                    Toast.makeText(getActivity(),"User or password incorrect",Toast.LENGTH_SHORT).show();
+                } else {
+                    //Check real
+
+                    Data data = new Data.Builder()
+                            .putString("username", usernameStr)
+                            .putString("password", passwordStr)
+                            .build();
+
+                    OneTimeWorkRequest loginWork =
+                            new OneTimeWorkRequest.Builder(LoginWorker.class)
+                                    .setInputData(data)
+                                    .build();
+
+                    WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(loginWork.getId())
+                            .observe(LoginFragment.this, status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String loginStatus = status.getOutputData().getString("status");
+                                    if (loginStatus.equals("Ok")) {
+                                        //TODO: identificado correctamente
+                                    }
+                                }
+                            });
+
+                    WorkManager.getInstance(requireContext()).enqueue(loginWork);
+                }
+
             }
         });
 
