@@ -20,21 +20,29 @@ def create_user():
     cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
     try:
         db.commit()
-        return jsonify({'status': 'Ok'}), 200
+        response = jsonify({'status': 'Ok'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
     except:
-        return jsonify({'status': 'Error'}), 200
+        response = jsonify({'status': 'Error'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
 
 @app.route('/login', methods=['POST'])
 def login_user():
     data = request.get_json()
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM users WHERE email=%s AND password=%s", (data['email'], data['password']))
+    cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (data['username'], data['password']))
     user = cursor.fetchone()
     if user:
-        return jsonify({'status': 'Ok'}), 200
+        response = jsonify({'status': 'Ok'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
     else:
-        return jsonify({'status': 'Error'}), 200
+        response = jsonify({'status': 'Not Found'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
 
 @app.route('/user-stocks', methods=['GET'])
 def get_user_stocks():

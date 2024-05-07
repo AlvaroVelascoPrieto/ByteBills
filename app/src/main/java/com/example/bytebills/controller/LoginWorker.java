@@ -19,12 +19,11 @@ public class LoginWorker extends Worker {
         RemoteDBHandler dbHandler = new RemoteDBHandler();
 
         String username = data.getString("username");
-        String email = data.getString("email");
         String password = data.getString("password");
 
         try {
             JSONObject json = new JSONObject();
-            json.put("email", email);
+            json.put("username", username);
             json.put("password", password);
 
             String status = dbHandler.post("login", json);

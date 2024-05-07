@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ public class AddStockFragment extends Fragment {
 
     private FragmentAddStockBinding binding;
 
+    String TAG = "AddStockFragment";
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -43,7 +46,8 @@ public class AddStockFragment extends Fragment {
         addstockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = getArguments().getString("username");
+                String username = MainActivity.username;
+                Log.d(TAG, "username: " + username);
                 if (username != null) {
 
                 }

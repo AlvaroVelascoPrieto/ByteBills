@@ -3,6 +3,7 @@ package com.example.bytebills.ui.login;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SharedMemory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,8 @@ public class LoginFragment extends Fragment {
 
                 if(usernameStr.equals("admin") && passwordStr.equals("admin")){
                     //ADMIN
+                    MainActivity.username = "admin";
+
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     i.putExtra("username", username.getText().toString());
                     startActivity(i);
@@ -75,7 +78,9 @@ public class LoginFragment extends Fragment {
                                 if (status != null && status.getState().isFinished()) {
                                     String loginStatus = status.getOutputData().getString("status");
                                     try {
-                                        if (loginStatus.equals("Ok")) {
+                                        if (loginStatus.equals("Ok")) { //El inicio de sesion es correcto
+                                            MainActivity.username = usernameStr;
+
                                             Intent i = new Intent(getActivity(), MainActivity.class);
                                             i.putExtra("username", username.getText().toString());
                                             startActivity(i);

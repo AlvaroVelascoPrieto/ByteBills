@@ -67,6 +67,8 @@ public class  RegistrationFragment extends Fragment {
                                 String registerStatus = status.getOutputData().getString("status");
                                 try {
                                     if (registerStatus.equals("Ok")) {
+                                        MainActivity.username = username;
+
                                         Intent i = new Intent(getActivity(), MainActivity.class);
                                         i.putExtra("username", username);
                                         startActivity(i);
