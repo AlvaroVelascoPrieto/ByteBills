@@ -49,6 +49,7 @@ public class RemoteDBHandler {
             int status = conn.getResponseCode();
             String message = conn.getResponseMessage();
             Log.d(TAG, "Response " + endpoint + ": " + status + " " + message);
+            Log.d(TAG, "Body: " + conn.getContent());
 
             if (status == 200) {
                 BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());

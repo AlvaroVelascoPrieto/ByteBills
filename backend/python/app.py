@@ -12,19 +12,23 @@ def get_db_connection():
         database="bytebills"
     )
 
+#################
+## USER ROUTES ##
+#################
+
 @app.route('/register', methods=['POST'])
 def create_user():
     data = request.get_json()
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
     try:
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
         db.commit()
         response = jsonify({'status': 'Ok'})
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
-    except:
-        response = jsonify({'status': 'Error'})
+    except mysql.connector.Error as err:
+        response = jsonify({'status': err.msg})
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
 
@@ -44,14 +48,71 @@ def login_user():
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
 
-@app.route('/user-stocks', methods=['GET'])
-def get_user_stocks():
+##################
+## STOCK ROUTES ##
+##################
+
+@app.route('/user-stocks/<username>', methods=['GET'])
+def get_user_tracked_stocks(username):
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT * FROM stock_user WHERE username=%s", (username,))
+        stocks = cursor.fetchall()
+        response = jsonify(stocks)
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+    except mysql.connector.Error as err:
+        response = jsonify({'status': err.msg})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+
+@app.route('/add-stock-to-user', methods=['POST'])
+def add_symbol_to_user():
     data = request.get_json()
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM stock_transaction WHERE username = ", (data['username']))
-    stocks = cursor.fetchall()
-    return jsonify(stocks), 200
+    try:
+        cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (data['username'], data['symbol']))
+        db.commit()
+        response = jsonify({'status': 'Ok'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+    except mysql.connector.Error as err:
+        response = jsonify({'status': err.msg})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+
+@app.route('/user-transactions/<username>', methods=['GET'])
+def get_user_stocks(username):
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT * FROM stock_transaction WHERE username = %s", (username))
+        stocks = cursor.fetchall()
+        response = jsonify(stocks)
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+    except mysql.connector.Error as err:
+        response = jsonify({'status': err.msg})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+
+@app.route('/add-transaction-to-user', methods=['POST'])
+def add_transaction_to_user():
+    data = request.get_json()
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("INSERT INTO stock_transaction (username, stock_symbol, price, quantity, buy_timestamp, sold) VALUES (%s, %s, %f, %f, %ld, %b)", (data['username'], data['symbol'], data['price'], data['quantity'], data['buy_timestamp'], False))
+        db.commit()
+        response = jsonify({'status': 'Ok'})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+    except mysql.connector.Error as err:
+        response = jsonify({'status': err.msg})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
@@ -80,7 +141,7 @@ def delete_user(user_id):
 
 @app.route('/stock/<stock_id>', methods=['GET'])
 def get_stock(stock_id):
-    res = fd.get_value_data("TSLA")
+    res = fd.get_value_data(stock_id)
     return jsonify(res)
 
 @app.route('/', methods=['GET'])

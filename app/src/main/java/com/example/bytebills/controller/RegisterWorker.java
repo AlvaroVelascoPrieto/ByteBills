@@ -30,14 +30,10 @@ public class RegisterWorker extends Worker {
 
             String status = dbHandler.post("register", json);
 
-            if (!status.equals("Error")) {
-                Data outputData = new Data.Builder()
-                        .putString("status", status)
-                        .build();
-                return Result.success(outputData);
-            } else {
-                return Result.failure();
-            }
+            Data outputData = new Data.Builder()
+                    .putString("status", status)
+                    .build();
+            return Result.success(outputData);
 
         } catch (Exception e) {
             e.printStackTrace();

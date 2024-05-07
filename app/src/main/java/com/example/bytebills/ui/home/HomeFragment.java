@@ -61,12 +61,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 AddStockFragment newAddStockFragment = new AddStockFragment();
-
-                //TODO: Set real username taken from where this fragment is made.
-                Bundle bundle = new Bundle();
-                bundle.putString("username", "admin");
-                newAddStockFragment.setArguments(bundle);
-
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newAddStockFragment);
                 fragmentTransaction.addToBackStack(null);

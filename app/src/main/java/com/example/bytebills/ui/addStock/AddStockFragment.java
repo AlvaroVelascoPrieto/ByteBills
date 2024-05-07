@@ -47,9 +47,10 @@ public class AddStockFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String username = MainActivity.username;
-                Log.d(TAG, "username: " + username);
                 if (username != null) {
 
+                } else {
+                    Toast.makeText(getActivity(), "user is null", Toast.LENGTH_SHORT).show();
                 }
                 //TODO: Add stock to user in DB
             }

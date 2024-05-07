@@ -17,9 +17,25 @@ CREATE TABLE IF NOT EXISTS crypto (
     name VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS stock_user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    stock_symbol VARCHAR(10) NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
+);
+
+CREATE TABLE IF NOT EXISTS crypto_user (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(255) NOT NULL,
+    crypto_symbol VARCHAR(10) NOT NULL,
+    FOREIGN KEY (username) REFERENCES users(username),
+    FOREIGN KEY (crypto_symbol) REFERENCES crypto(symbol)
+);
+
 CREATE TABLE IF NOT EXISTS stock_transaction (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     stock_symbol VARCHAR(10) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     quantity INT NOT NULL,
@@ -27,19 +43,19 @@ CREATE TABLE IF NOT EXISTS stock_transaction (
     sold BOOLEAN NOT NULL DEFAULT FALSE,
     sell_price DECIMAL(10, 2),
     sell_timestamp TIMESTAMP,
-    FOREIGN KEY (user) REFERENCES users(username),
+    FOREIGN KEY (username) REFERENCES users(username),
     FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
 );
 
 CREATE TABLE IF NOT EXISTS crypto_transaction (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
     crypto_symbol VARCHAR(10) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     quantity INT NOT NULL,
     buy_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     sold BOOLEAN NOT NULL DEFAULT FALSE,
     sell_timestamp TIMESTAMP,
-    FOREIGN KEY (user) REFERENCES users(username),
+    FOREIGN KEY (username) REFERENCES users(username),
     FOREIGN KEY (crypto_symbol) REFERENCES crypto(symbol)
 );

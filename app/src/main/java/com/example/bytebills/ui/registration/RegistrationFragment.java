@@ -72,6 +72,8 @@ public class  RegistrationFragment extends Fragment {
                                         Intent i = new Intent(getActivity(), MainActivity.class);
                                         i.putExtra("username", username);
                                         startActivity(i);
+                                    } else {
+                                        Toast.makeText(getActivity(), registerStatus, Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (NullPointerException e) {
                                     Toast.makeText(getActivity(), "An unexpected error ocurred, try again later", Toast.LENGTH_SHORT).show();

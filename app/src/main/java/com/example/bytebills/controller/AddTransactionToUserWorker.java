@@ -9,24 +9,30 @@ import androidx.work.WorkerParameters;
 
 import org.json.simple.JSONObject;
 
-public class LoginWorker extends Worker {
+public class AddTransactionToUserWorker extends Worker {
 
-    public LoginWorker(Context context, WorkerParameters workerParameters) {
+    public AddTransactionToUserWorker(Context context, WorkerParameters workerParameters) {
         super(context, workerParameters);
     }
-    public Result doWork() {
+    public ListenableWorker.Result doWork() {
         Data data = getInputData();
         RemoteDBHandler dbHandler = new RemoteDBHandler();
 
         String username = data.getString("username");
-        String password = data.getString("password");
+        String symbol = data.getString("symbol");
+        Float price = data.getFloat("price", 0);
+        Float qty = data.getFloat("quantity", 0);
+        Long time = data.getLong("buy_timestamp", 0);
 
         try {
             JSONObject json = new JSONObject();
             json.put("username", username);
-            json.put("password", password);
+            json.put("symbol", symbol);
+            json.put("price", price);
+            json.put("quantity", qty);
+            json.put("buy_timestamp", time);
 
-            String status = dbHandler.post("login", json);
+            String status = dbHandler.post("add-transaction-to-user", json);
 
             Data outputData = new Data.Builder()
                     .putString("status", status)
@@ -35,7 +41,9 @@ public class LoginWorker extends Worker {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Result.failure();
+            return ListenableWorker.Result.failure();
         }
     }
 }
+
+
