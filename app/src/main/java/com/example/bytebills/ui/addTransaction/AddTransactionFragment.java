@@ -1,5 +1,9 @@
 package com.example.bytebills.ui.addTransaction;
 
+import static android.app.PendingIntent.getActivity;
+import static androidx.core.content.ContentProviderCompat.requireContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -22,6 +26,7 @@ import androidx.work.WorkManager;
 
 import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
+import com.example.bytebills.controller.AddTransactionToUserWorker;
 import com.example.bytebills.controller.LoginWorker;
 import com.example.bytebills.databinding.FragmentAddTransactionBinding;
 import com.example.bytebills.ui.login.LoginFragment;
@@ -59,39 +64,38 @@ public class AddTransactionFragment extends AppCompatActivity {
                 Data data = new Data.Builder()
                         .putString("username", username)
                         //TODO: get symbol from the stock tapped
-                        .putString("symbol", symbol)
                         .putFloat("price", Float.parseFloat(price.getText().toString()))
                         .putFloat("quantity", Float.parseFloat(quantity.getText().toString()))
                         //TODO: get timestamp de la fecha
                         .build();
 
-                OneTimeWorkRequest loginWork =
-                        new OneTimeWorkRequest.Builder(LoginWorker.class)
+                OneTimeWorkRequest addTransactionWork =
+                        new OneTimeWorkRequest.Builder(AddTransactionToUserWorker.class)
                                 .setInputData(data)
                                 .build();
 
-                WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(loginWork.getId())
-                        .observe(LoginFragment.this, status -> {
+                WorkManager.getInstance(AddTransactionFragment.this).getWorkInfoByIdLiveData(addTransactionWork.getId())
+                        .observe(AddTransactionFragment.this, status -> {
                             if (status != null && status.getState().isFinished()) {
                                 String loginStatus = status.getOutputData().getString("status");
                                 try {
                                     if (loginStatus.equals("Ok")) { //El inicio de sesion es correcto
-                                        MainActivity.username = usernameStr;
+                                        MainActivity.username = username;
 
-                                        Intent i = new Intent(getActivity(), MainActivity.class);
-                                        i.putExtra("username", username.getText().toString());
+                                        Intent i = new Intent(AddTransactionFragment.this, MainActivity.class);
+                                        i.putExtra("username", username);
                                         startActivity(i);
                                     } else {
-                                        Toast.makeText(getActivity(), "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddTransactionFragment.this, "Username or password are incorrect", Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (NullPointerException e) {
                                     e.printStackTrace();
-                                    Toast.makeText(getActivity(), "Network error, try again", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddTransactionFragment.this, "Network error, try again", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
 
-                WorkManager.getInstance(requireContext()).enqueue(loginWork);
+                WorkManager.getInstance(AddTransactionFragment.this).enqueue(addTransactionWork);
             }
 
         });

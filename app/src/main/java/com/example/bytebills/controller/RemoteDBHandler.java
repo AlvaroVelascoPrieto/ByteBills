@@ -24,7 +24,10 @@ import java.net.URL;
 
 public class RemoteDBHandler {
 
-    private String remoteServerDirection = "http://192.168.1.7:5000/";
+    private String remoteServerDirection = "http://85.58.82.92:5000/";
+    //Esta es mi IP de casa y esta hosteado en mi servidor porque me era mucho mas sencillo
+    //que en el puto google cloud ese pocho para hacer cambios.
+    //Ya lo cambiaremos si eso.
     private String TAG = "RemoteDBHandler";
 
     public RemoteDBHandler() {
