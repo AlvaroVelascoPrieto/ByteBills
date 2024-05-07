@@ -3,6 +3,8 @@ services:
     build:
       context: sql/
       dockerfile: Dockerfile
+    volumes:
+      - sql/data:/var/lib/mysql
 
   backend:
     build:
