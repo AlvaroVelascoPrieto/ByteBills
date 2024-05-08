@@ -3,12 +3,14 @@ import requests
 from requests_html import HTMLSession
 import pandas as pd
 
+def to_str(x):
+    return str(x)
 
 def get_value_data(symbol):
     historic = yf.download(symbol, period="1d", interval="1h")
     price = historic.loc[:,"Close"]
     print(price)
-    return price.to_json(date_format='iso')
+    return price.apply(to_str).to_json(date_format='iso')
 
 def get_crypto_symbols():    
     session = HTMLSession()
