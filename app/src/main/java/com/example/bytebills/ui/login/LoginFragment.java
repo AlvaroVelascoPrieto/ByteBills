@@ -52,7 +52,6 @@ public class LoginFragment extends Fragment {
                 //TODO: Check user credentials in DB
                 String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
-
                 if(usernameStr.equals("admin") && passwordStr.equals("admin")){
                     //ADMIN
                     MainActivity.username = "admin";

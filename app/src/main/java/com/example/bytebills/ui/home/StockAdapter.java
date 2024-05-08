@@ -116,6 +116,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
             public void onClick(View v) {
                 //TODO: Open fragment for StockDisplay
                 Intent i = new Intent(holder.itemView.getContext(), StockValueActivity.class);
+                i.putExtra("stockSymbol", holder.textViewStockId.getText());
                 startActivity(holder.itemView.getContext(),i, null);
             }
         });

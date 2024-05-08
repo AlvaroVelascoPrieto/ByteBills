@@ -11,15 +11,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
+import com.example.bytebills.controller.LoginWorker;
+import com.example.bytebills.controller.StockInfoWorker;
 import com.example.bytebills.ui.addTransaction.AddTransactionFragment;
+import com.example.bytebills.ui.login.LoginFragment;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
@@ -134,6 +142,41 @@ public class StockValueActivity extends AppCompatActivity {
     }
 
     public void renderData(ArrayList<String> dates, ArrayList<Double> allAmounts) {
+        String stock_id = getIntent().getStringExtra("stockSymbol");
+        System.out.println("STOCKID");
+        System.out.println(stock_id);
+
+        Data data = new Data.Builder()
+                .putString("stock_id", stock_id)
+                .build();
+
+        OneTimeWorkRequest stockInfoWork =
+                new OneTimeWorkRequest.Builder(StockInfoWorker.class)
+                        .setInputData(data)
+                        .build();
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(stockInfoWork.getId())
+                .observe(StockValueActivity.this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String queryStatus = status.getOutputData().getString("status");
+                        try {
+                            if (queryStatus.equals("Ok")) { //El inicio de sesion es correcto
+
+
+                                Intent i = new Intent(this, MainActivity.class);
+
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(StockValueActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                            Toast.makeText(StockValueActivity.this, "Network error, try again", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        WorkManager.getInstance().enqueue(stockInfoWork);
 
         final ArrayList<String> xAxisLabel = new ArrayList<>();
         xAxisLabel.add("1");

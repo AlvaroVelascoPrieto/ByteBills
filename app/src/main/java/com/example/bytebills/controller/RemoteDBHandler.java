@@ -24,16 +24,18 @@ import java.net.URL;
 
 public class RemoteDBHandler {
 
-    private String remoteServerDirection = "http://85.58.82.92:5000/";
+    private static String remoteServerDirection = "http://85.58.82.92:5000/";
     //Esta es mi IP de casa y esta hosteado en mi servidor porque me era mucho mas sencillo
     //que en el puto google cloud ese pocho para hacer cambios.
     //Ya lo cambiaremos si eso.
-    private String TAG = "RemoteDBHandler";
+    private static String TAG = "RemoteDBHandler";
 
     public RemoteDBHandler() {
     }
 
-    public String post(String endpoint, @NonNull JSONObject json) { remoteServerDirection += endpoint;
+    public String post(String endpoint, @NonNull JSONObject json) {
+        remoteServerDirection = "http://85.58.82.92:5000/";
+        remoteServerDirection += endpoint;
         HttpURLConnection conn = null;
 
         try {
@@ -84,6 +86,62 @@ public class RemoteDBHandler {
 
 
         return "Error";
+    }
+
+    public static JSONObject get(String endpoint, @NonNull JSONObject json) throws ParseException {
+        remoteServerDirection = "http://85.58.82.92:5000/";
+        remoteServerDirection += endpoint;
+        remoteServerDirection += "/";
+        remoteServerDirection += json.get("stock");
+        System.out.println(remoteServerDirection);
+        HttpURLConnection conn = null;
+        JSONObject responseJSON;
+
+        try {
+            String charset = "UTF-8";
+            conn = (HttpURLConnection) new URL(remoteServerDirection).openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+            conn.setRequestProperty("Accept", "application/json");
+
+
+
+            int status = conn.getResponseCode();
+            String message = conn.getResponseMessage();
+            Log.d(TAG, "Response " + endpoint + ": " + status + " " + message);
+            Log.d(TAG, "Body: " + conn.getContent());
+
+            if (status == 200) {
+                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+                String line;
+                StringBuilder result = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    Log.d(TAG, line);
+                    result.append(line);
+                }
+                inputStream.close();
+
+                JSONParser parser = new JSONParser();
+                responseJSON = (JSONObject) parser.parse(result.toString());
+                Log.d(TAG, String.valueOf(responseJSON));
+                return responseJSON;
+            }
+
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        JSONParser parser = new JSONParser();
+        return responseJSON = (JSONObject) parser.parse("Error");
     }
 
 }
