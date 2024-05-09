@@ -8,7 +8,10 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.simple.JSONObject;
+
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -17,10 +20,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.StringTokenizer;
 
 public class RemoteDBHandler {
 
@@ -95,7 +101,7 @@ public class RemoteDBHandler {
         remoteServerDirection += json.get("stock");
         System.out.println(remoteServerDirection);
         HttpURLConnection conn = null;
-        JSONObject responseJSON;
+        JSONObject responseJSON ;
 
         try {
             String charset = "UTF-8";
@@ -114,7 +120,7 @@ public class RemoteDBHandler {
 
             if (status == 200) {
                 BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
                 String line;
                 StringBuilder result = new StringBuilder();
@@ -124,19 +130,16 @@ public class RemoteDBHandler {
                     result.append(line);
                 }
                 inputStream.close();
-
                 JSONParser parser = new JSONParser();
-                responseJSON = (JSONObject) parser.parse(result.toString());
-                Log.d(TAG, String.valueOf(responseJSON));
-                return responseJSON;
+                JSONObject responsaJSON = (JSONObject) parser.parse(result.substring(1, result.length() - 1).replace("\\", ""));
+
+                return responsaJSON;
             }
 
         } catch (ProtocolException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ParseException e) {
+        }  catch (IOException e) {
             throw new RuntimeException(e);
         }
 

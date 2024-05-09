@@ -158,14 +158,11 @@ public class StockValueActivity extends AppCompatActivity {
         WorkManager.getInstance().getWorkInfoByIdLiveData(stockInfoWork.getId())
                 .observe(StockValueActivity.this, status -> {
                     if (status != null && status.getState().isFinished()) {
-                        String queryStatus = status.getOutputData().getString("status");
+                        System.out.println(status.getOutputData());
+                        String queryStatus = status.getOutputData().getString("value");
                         try {
-                            if (queryStatus.equals("Ok")) { //El inicio de sesion es correcto
-
-
-                                Intent i = new Intent(this, MainActivity.class);
-
-                                startActivity(i);
+                            if (!queryStatus.equals("Error")) { //El inicio de sesion es correcto
+                                Toast.makeText(StockValueActivity.this, "NEEENO", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(StockValueActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
