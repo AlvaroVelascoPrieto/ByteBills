@@ -9,6 +9,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import java.util.Calendar;
 
 public class AddTransactionFragment extends AppCompatActivity {
 
+    String TAG = "AddTransactionFragment";
     private FragmentAddTransactionBinding binding;
     private EditText dateEdt;
 
@@ -60,44 +62,42 @@ public class AddTransactionFragment extends AppCompatActivity {
         addTransactionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = MainActivity.username;
-                Data data = new Data.Builder()
-                        .putString("username", username)
-                        //TODO: get symbol from the stock tapped
-                        .putFloat("price", Float.parseFloat(price.getText().toString()))
-                        .putFloat("quantity", Float.parseFloat(quantity.getText().toString()))
-                        //TODO: get timestamp de la fecha
-                        .build();
+                if (quantity.getText().length() > 0 && price.getText().length() > 0) {
+                    String username = MainActivity.username;
 
-                OneTimeWorkRequest addTransactionWork =
-                        new OneTimeWorkRequest.Builder(AddTransactionToUserWorker.class)
-                                .setInputData(data)
-                                .build();
+                    Data data = new Data.Builder()
+                            .putString("username", username)
+                            //TODO: get symbol from the stock tapped
+                            .putFloat("price", Float.parseFloat(price.getText().toString()))
+                            .putFloat("quantity", Float.parseFloat(quantity.getText().toString()))
+                            //TODO: get timestamp de la fecha
+                            .build();
 
-                WorkManager.getInstance(AddTransactionFragment.this).getWorkInfoByIdLiveData(addTransactionWork.getId())
-                        .observe(AddTransactionFragment.this, status -> {
-                            if (status != null && status.getState().isFinished()) {
-                                String loginStatus = status.getOutputData().getString("status");
-                                try {
-                                    if (loginStatus.equals("Ok")) { //El inicio de sesion es correcto
-                                        MainActivity.username = username;
+                    OneTimeWorkRequest addTransactionWork =
+                            new OneTimeWorkRequest.Builder(AddTransactionToUserWorker.class)
+                                    .setInputData(data)
+                                    .build();
 
-                                        Intent i = new Intent(AddTransactionFragment.this, MainActivity.class);
-                                        i.putExtra("username", username);
-                                        startActivity(i);
-                                    } else {
-                                        Toast.makeText(AddTransactionFragment.this, "Username or password are incorrect", Toast.LENGTH_SHORT).show();
+                    WorkManager.getInstance(AddTransactionFragment.this).getWorkInfoByIdLiveData(addTransactionWork.getId())
+                            .observe(AddTransactionFragment.this, status -> {
+                                if (status != null && status.getState().isFinished()) {
+                                    String addTransactionStatus = status.getOutputData().getString("status");
+                                    try {
+                                        if (addTransactionStatus.equals("Ok")) { //El inicio de sesion es correcto
+                                            //Correctly added
+                                        } else {
+                                            Toast.makeText(AddTransactionFragment.this, "Couldn't add, unexpected error", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(AddTransactionFragment.this, "Network error, try again", Toast.LENGTH_SHORT).show();
                                     }
-                                } catch (NullPointerException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(AddTransactionFragment.this, "Network error, try again", Toast.LENGTH_SHORT).show();
                                 }
-                            }
-                        });
+                            });
 
-                WorkManager.getInstance(AddTransactionFragment.this).enqueue(addTransactionWork);
+                    WorkManager.getInstance(AddTransactionFragment.this).enqueue(addTransactionWork);
+                }
             }
-
         });
 
 
