@@ -40,9 +40,14 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class StockValueActivity extends AppCompatActivity {
@@ -70,6 +75,40 @@ public class StockValueActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_stockvalue);
 
         FloatingActionButton add = findViewById(R.id.fab);
+
+        String stock_id = getIntent().getStringExtra("stockSymbol");
+        System.out.println("STOCKID");
+        System.out.println(stock_id);
+
+        Data data = new Data.Builder()
+                .putString("stock_id", stock_id)
+                .build();
+
+        OneTimeWorkRequest stockInfoWork =
+                new OneTimeWorkRequest.Builder(StockInfoWorker.class)
+                        .setInputData(data)
+                        .build();
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(stockInfoWork.getId())
+                .observe(StockValueActivity.this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String queryStatus = status.getOutputData().getString("value");
+                        JSONParser parser = new JSONParser();
+                        try {
+                            org.json.simple.JSONObject stockData = (org.json.simple.JSONObject) parser.parse(status.getOutputData().getString("value"));
+                            System.out.println("GOO");
+                            System.out.println(data);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+                });
+
+        WorkManager.getInstance().enqueue(stockInfoWork);
+
+
+
         volumeReportChart = findViewById(R.id.reportingChart);
         ArrayList<String> dates = new ArrayList<>();
         dates.add("2024-05-03");
@@ -142,38 +181,7 @@ public class StockValueActivity extends AppCompatActivity {
     }
 
     public void renderData(ArrayList<String> dates, ArrayList<Double> allAmounts) {
-        String stock_id = getIntent().getStringExtra("stockSymbol");
-        System.out.println("STOCKID");
-        System.out.println(stock_id);
 
-        Data data = new Data.Builder()
-                .putString("stock_id", stock_id)
-                .build();
-
-        OneTimeWorkRequest stockInfoWork =
-                new OneTimeWorkRequest.Builder(StockInfoWorker.class)
-                        .setInputData(data)
-                        .build();
-
-        WorkManager.getInstance().getWorkInfoByIdLiveData(stockInfoWork.getId())
-                .observe(StockValueActivity.this, status -> {
-                    if (status != null && status.getState().isFinished()) {
-                        System.out.println(status.getOutputData());
-                        String queryStatus = status.getOutputData().getString("value");
-                        try {
-                            if (!queryStatus.equals("Error")) { //El inicio de sesion es correcto
-                                Toast.makeText(StockValueActivity.this, "NEEENO", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(StockValueActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (NullPointerException e) {
-                            e.printStackTrace();
-                            Toast.makeText(StockValueActivity.this, "Network error, try again", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-        WorkManager.getInstance().enqueue(stockInfoWork);
 
         final ArrayList<String> xAxisLabel = new ArrayList<>();
         xAxisLabel.add("1");
