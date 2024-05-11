@@ -7,6 +7,6 @@ public class ClaimsYAxisValueFormatter extends ValueFormatter {
 
     @Override
     public String getAxisLabel(float value, AxisBase axis) {
-        return value + "k";
+        return String.valueOf(value);
     }
 }

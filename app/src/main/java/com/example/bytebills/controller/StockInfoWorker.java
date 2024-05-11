@@ -22,12 +22,13 @@ public class StockInfoWorker extends Worker {
             JSONObject json = new JSONObject();
             json.put("stock", stock);
 
-            JSONObject returnValue = RemoteDBHandler.get("stock", json);
+            String returnValue = RemoteDBHandler.get("stock", json);
 
             Data outputData = new Data.Builder()
                     .putString("value", String.valueOf(returnValue))
                     .build();
             return Result.success(outputData);
+
 
         } catch (Exception e) {
             e.printStackTrace();

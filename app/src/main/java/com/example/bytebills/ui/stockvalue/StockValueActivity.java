@@ -1,33 +1,23 @@
 package com.example.bytebills.ui.stockvalue;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
-import com.example.bytebills.controller.LoginWorker;
 import com.example.bytebills.controller.StockInfoWorker;
 import com.example.bytebills.ui.addTransaction.AddTransactionFragment;
-import com.example.bytebills.ui.login.LoginFragment;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
@@ -40,15 +30,19 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.Text;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class StockValueActivity extends AppCompatActivity {
     private RecyclerView rvVertical, rvHorizontal;
@@ -75,11 +69,14 @@ public class StockValueActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_stockvalue);
 
         FloatingActionButton add = findViewById(R.id.fab);
+        ArrayList<String> dates = new ArrayList<>();
+        ArrayList<Double> allAmounts = new ArrayList<>();
 
         String stock_id = getIntent().getStringExtra("stockSymbol");
         System.out.println("STOCKID");
         System.out.println(stock_id);
-
+        TextView title = findViewById(R.id.tvSesionGraph);
+        title.setText(stock_id);
         Data data = new Data.Builder()
                 .putString("stock_id", stock_id)
                 .build();
@@ -89,17 +86,25 @@ public class StockValueActivity extends AppCompatActivity {
                         .setInputData(data)
                         .build();
 
+
         WorkManager.getInstance().getWorkInfoByIdLiveData(stockInfoWork.getId())
                 .observe(StockValueActivity.this, status -> {
                     if (status != null && status.getState().isFinished()) {
                         String queryStatus = status.getOutputData().getString("value");
-                        JSONParser parser = new JSONParser();
                         try {
-                            org.json.simple.JSONObject stockData = (org.json.simple.JSONObject) parser.parse(status.getOutputData().getString("value"));
+                            String dataValues =status.getOutputData().getString("value");
+
                             System.out.println("GOO");
-                            System.out.println(data);
-                        } catch (ParseException e) {
-                            throw new RuntimeException(e);
+                            System.out.println(dataValues);
+                            String [] valueList = dataValues.replace("{","").replace("}","").split(",");
+                            for (String value: valueList){
+                                dates.add(value.split("\":\"")[0].replace("\"",""));
+                                allAmounts.add(Double.valueOf(value.split("\":\"")[1].replace("\"","")));
+                            }
+                            System.out.println(allAmounts);
+                            renderData(dates, allAmounts);
+                        } catch (NullPointerException e){
+                            System.out.println("NO DATA");
                         }
 
                     }
@@ -110,20 +115,6 @@ public class StockValueActivity extends AppCompatActivity {
 
 
         volumeReportChart = findViewById(R.id.reportingChart);
-        ArrayList<String> dates = new ArrayList<>();
-        dates.add("2024-05-03");
-        dates.add("2024-05-04");
-        dates.add("2024-05-05");
-        dates.add("2024-05-06");
-        ArrayList<Double> allAmounts = new ArrayList<>();
-        allAmounts.add(20000.0);
-        allAmounts.add(30000.0);
-        allAmounts.add(32000.0);
-        allAmounts.add(52000.0);
-        renderData(dates, allAmounts);
-
-
-
 
         rvVertical = findViewById(R.id.rvVertical);
         rvHorizontal = findViewById(R.id.rvHorizontal);
@@ -195,33 +186,30 @@ public class StockValueActivity extends AppCompatActivity {
         XAxis.XAxisPosition position = XAxis.XAxisPosition.BOTTOM;
         xAxis.setPosition(position);
         xAxis.enableGridDashedLine(2f, 7f, 0f);
-        xAxis.setAxisMaximum(5f);
+        xAxis.setAxisMaximum(allAmounts.size()-1);
         xAxis.setAxisMinimum(0f);
-        xAxis.setLabelCount(6, true);
+        xAxis.setLabelCount(allAmounts.size(), true);
         xAxis.setGranularityEnabled(true);
         xAxis.setGranularity(7f);
         xAxis.setLabelRotationAngle(315f);
 
         xAxis.setValueFormatter(new ClaimsXAxisValueFormatter(dates));
-
         xAxis.setCenterAxisLabels(true);
-
-
         xAxis.setDrawLimitLinesBehindData(true);
 
 
 
 
 
-        LimitLine ll2 = new LimitLine(35f, "");
-        ll2.setLineWidth(4f);
-        ll2.enableDashedLine(10f, 10f, 0f);
-        ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
-        ll2.setTextSize(10f);
-        ll2.setLineColor(Color.parseColor("#FFFFFF"));
+        //LimitLine ll2 = new LimitLine(35f, "");
+        //ll2.setLineWidth(4f);
+        //ll2.enableDashedLine(10f, 10f, 0f);
+        //ll2.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_BOTTOM);
+        //ll2.setTextSize(10f);
+        //ll2.setLineColor(Color.parseColor("#FFFFFF"));
 
         xAxis.removeAllLimitLines();
-        xAxis.addLimitLine(ll2);
+        //xAxis.addLimitLine(ll2);
 
 
         YAxis leftAxis = volumeReportChart.getAxisLeft();
@@ -229,8 +217,8 @@ public class StockValueActivity extends AppCompatActivity {
         //leftAxis.addLimitLine(ll1);
         //leftAxis.addLimitLine(ll2);
 
-        leftAxis.setAxisMaximum(Collections.max(allAmounts).floatValue() + 1000f);
-        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum((float) ((Collections.max(allAmounts).floatValue() + Collections.max(allAmounts).floatValue()*0.001)));
+        leftAxis.setAxisMinimum((float) ((Collections.min(allAmounts).floatValue() - Collections.max(allAmounts).floatValue()*0.001)));
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
         leftAxis.setDrawZeroLine(false);
         leftAxis.setDrawLimitLinesBehindData(false);
@@ -240,7 +228,7 @@ public class StockValueActivity extends AppCompatActivity {
         volumeReportChart.getDescription().setEnabled(true);
         Description description = new Description();
         // description.setText(UISetters.getFullMonthName());//commented for weekly reporting
-        description.setText("Week");
+        description.setText("DAY");
         description.setTextSize(15f);
         volumeReportChart.getDescription().setPosition(0f, 0f);
         volumeReportChart.setDescription(description);
@@ -253,11 +241,16 @@ public class StockValueActivity extends AppCompatActivity {
 
     private void setDataForWeeksWise(List<Double> amounts) {
 
+        final DecimalFormat df = new DecimalFormat("0.00");
+        df.setRoundingMode(RoundingMode.UP);
         ArrayList<Entry> values = new ArrayList<>();
-        values.add(new Entry(1, amounts.get(0).floatValue()));
-        values.add(new Entry(2, amounts.get(1).floatValue()));
-        values.add(new Entry(3, amounts.get(2).floatValue()));
-        values.add(new Entry(4, amounts.get(3).floatValue()));
+        Iterator<Double> itr = amounts.iterator();
+        int i=0;
+        while (itr.hasNext()){
+            values.add(new Entry( i, Float.valueOf(df.format(itr.next()))));
+            i++;
+        }
+
 
 
         LineDataSet set1;
@@ -268,16 +261,15 @@ public class StockValueActivity extends AppCompatActivity {
             volumeReportChart.getData().notifyDataChanged();
             volumeReportChart.notifyDataSetChanged();
         } else {
-            set1 = new LineDataSet(values, "Total volume");
+            set1 = new LineDataSet(values, "Price");
             set1.setDrawCircles(true);
             set1.enableDashedLine(10f, 0f, 0f);
             set1.enableDashedHighlightLine(10f, 0f, 0f);
             set1.setColor(getResources().getColor(R.color.purple_200));
             set1.setCircleColor(getResources().getColor(R.color.purple_200));
             set1.setLineWidth(2f);//line size
-            set1.setCircleRadius(5f);
+            set1.setCircleRadius(4f);
             set1.setDrawCircleHole(true);
-            set1.setValueTextSize(10f);
             set1.setDrawFilled(true);
             set1.setFormLineWidth(5f);
             set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));

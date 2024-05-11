@@ -94,7 +94,7 @@ public class RemoteDBHandler {
         return "Error";
     }
 
-    public static JSONObject get(String endpoint, @NonNull JSONObject json) throws ParseException {
+    public static String get(String endpoint, @NonNull JSONObject json) throws ParseException {
         remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         remoteServerDirection += "/";
@@ -130,10 +130,8 @@ public class RemoteDBHandler {
                     result.append(line);
                 }
                 inputStream.close();
-                JSONParser parser = new JSONParser();
-                JSONObject responsaJSON = (JSONObject) parser.parse(result.substring(1, result.length() - 1).replace("\\", ""));
 
-                return responsaJSON;
+                return result.substring(1, result.length() - 1).replace("\\", "");
             }
 
         } catch (ProtocolException e) {
@@ -144,7 +142,7 @@ public class RemoteDBHandler {
         }
 
         JSONParser parser = new JSONParser();
-        return responseJSON = (JSONObject) parser.parse("Error");
+        return "Error";
     }
 
 }
