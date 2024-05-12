@@ -40,6 +40,7 @@ public class RemoteDBHandler {
     }
 
     public String post(String endpoint, @NonNull JSONObject json) {
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         HttpURLConnection conn = null;
 
@@ -94,6 +95,7 @@ public class RemoteDBHandler {
     }
 
     public static String get(String endpoint) throws ParseException {
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         Log.d(TAG, remoteServerDirection);
         HttpURLConnection conn = null;

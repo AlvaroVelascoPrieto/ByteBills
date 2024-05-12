@@ -37,13 +37,19 @@ import com.example.bytebills.databinding.FragmentLoginBinding;
 import com.example.bytebills.ui.registration.RegistrationFragment;
 import com.example.bytebills.ui.stockvalue.StockValueActivity;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 public class AddStockFragment extends Fragment {
 
     private FragmentAddStockBinding binding;
+    private JSONObject symbolJSON;
 
     String TAG = "AddStockFragment";
 
@@ -75,21 +81,29 @@ public class AddStockFragment extends Fragment {
 
                     WorkManager.getInstance().getWorkInfoByIdLiveData(symbolInfoWork.getId())
                             .observe((LifecycleOwner) getContext(), status -> {
-                                if (status != null && status.getState().isFinished()) {
-                                    String [] queryStatus = status.getOutputData().getString("value").split("\":\"")[1].replace("['", "").replace("']\"", "").split("', '");
+                                if (status != null && status.getState().isFinished() && status.getOutputData().getString("value")!="Error") {
+                                    System.out.println(status.getOutputData().getString("value"));
+                                    String queryStatus = status.getOutputData().getString("value").split("Symbol")[1].replace("\\", "").replace("}", "").replaceFirst("\":", "");
+                                    queryStatus += "}";
+                                    JSONParser parser = new JSONParser();
                                     try {
-                                        List<String> symbols = new ArrayList<String>();
-                                        for (String retreivedSymbol : queryStatus) {
-                                            symbols.add(retreivedSymbol);
+                                        symbolJSON = (JSONObject) parser.parse(queryStatus.toString());
+                                    } catch (ParseException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    String [] values= queryStatus.replace("{", "").replace("}","").split("\",");
+                                    try {
+                                        List<String> names = new ArrayList<String>();
+                                        for (String retreivedValue : values) {
+                                            names.add(retreivedValue.split(":")[0].replace("\"", ""));
                                         }
-                                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, symbols);
+                                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, names);
                                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         symbol.setAdapter(dataAdapter);
 
-                                    } catch (NullPointerException e){
+                                    } catch (NullPointerException e) {
                                         System.out.println("NO DATA");
                                     }
-
                                 }
                             });
 
@@ -109,20 +123,28 @@ public class AddStockFragment extends Fragment {
                             .observe((LifecycleOwner) getContext(), status -> {
                                 if (status != null && status.getState().isFinished() && status.getOutputData().getString("value")!="Error") {
                                     System.out.println(status.getOutputData().getString("value"));
-                                    String [] queryStatus = status.getOutputData().getString("value").replace("\"", "").split(",");
+                                    String queryStatus = status.getOutputData().getString("value").split("Symbol")[1].replace("\\", "").replace("}", "").replaceFirst("\":", "");
+                                    queryStatus += "}";
+                                    JSONParser parser = new JSONParser();
                                     try {
-                                        List<String> symbols = new ArrayList<String>();
-                                        for (String retreivedSymbol : queryStatus) {
-                                            symbols.add(retreivedSymbol);
+                                        symbolJSON = (JSONObject) parser.parse(queryStatus.toString());
+                                    } catch (ParseException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    String [] values= queryStatus.replace("{", "").replace("}","").split("\",");
+                                    try {
+                                        List<String> names = new ArrayList<String>();
+                                        for (String retreivedValue : values) {
+                                            names.add(retreivedValue.split(":")[0].replace("\"", ""));
                                         }
-                                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, symbols);
+                                        Collections.sort(names);
+                                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, names);
                                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                         symbol.setAdapter(dataAdapter);
 
-                                    } catch (NullPointerException e){
+                                    } catch (NullPointerException e) {
                                         System.out.println("NO DATA");
                                     }
-
                                 }
                             });
 
@@ -137,8 +159,10 @@ public class AddStockFragment extends Fragment {
             public void onClick(View v) {
                 String username = MainActivity.username;
                 if (username != null) {
+                    System.out.println(symbol.getSelectedItem().toString());
+                    System.out.println(symbolJSON.get(symbol.getSelectedItem().toString()));
                     Data data = new Data.Builder()
-                            .putString("symbol", symbol.toString())
+                            .putString("symbol", String.valueOf(symbolJSON.get(symbol.toString())))
                             .putString("username", username)
                             .build();
 
