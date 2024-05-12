@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import mysql.connector
 import financeData as fd
+import db_interaction
 
 app = Flask(__name__)
 
@@ -70,18 +71,9 @@ def get_user_tracked_stocks(username):
 @app.route('/add-stock-to-user', methods=['POST'])
 def add_symbol_to_user():
     data = request.get_json()
-    db = get_db_connection()
-    cursor = db.cursor()
-    try:
-        cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (data['username'], data['symbol']))
-        db.commit()
-        response = jsonify({'status': 'Ok'})
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
-    except mysql.connector.Error as err:
-        response = jsonify({'status': err.msg})
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
+    response = db_interaction.db_add_stock_to_user(data)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
 
 @app.route('/user-transactions/<username>', methods=['GET'])
 def get_user_stocks(username):

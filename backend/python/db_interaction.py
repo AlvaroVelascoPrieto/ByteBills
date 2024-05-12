@@ -66,7 +66,7 @@ def db_add_stock_to_user(data):
         cursor.execute("INSERT INTO stocks VALUES (%s, %s)", symbol, "placeholder nombre compañía")
 
     try:
-        cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (data['username'], data['symbol']))
+        cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (username, symbol))
         db.commit()
         response = {'status': 'Ok'}
         return response
