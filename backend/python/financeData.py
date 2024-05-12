@@ -23,11 +23,10 @@ def get_crypto_symbols():
     resp = session.get(f"https://finance.yahoo.com/crypto?offset=0&count={num_currencies}")
     tables = pd.read_html(resp.html.raw_html)
     df = tables[0].copy()
-    symbols_yf = df.Symbol.tolist()
-    print(symbols_yf[:15])
-    return symbols_yf
-
-
+    df2 = df[['Symbol', 'Name']]
+    df2['Name'] = df2['Name'].apply(remove_accents)
+    results = df2.drop_duplicates(subset='Name', keep='first').set_index('Name').to_json()
+    return results
 
 def get_stock_symbols():    
     session = HTMLSession()

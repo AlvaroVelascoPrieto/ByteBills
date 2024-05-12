@@ -150,7 +150,7 @@ def get_stock_symbols():
     return jsonify(res)
 
 @app.route('/crypto', methods=['GET'])
-def get_stock_symbols():
+def get_crypto_symbols():
     res = fd.get_crypto_symbols()
     return jsonify(res)
 
