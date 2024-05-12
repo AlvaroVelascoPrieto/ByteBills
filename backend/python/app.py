@@ -144,6 +144,16 @@ def get_stock(stock_id):
     res = fd.get_value_data(stock_id)
     return jsonify(res)
 
+@app.route('/stock', methods=['GET'])
+def get_stock_symbols():
+    res = fd.get_stock_symbols()
+    return jsonify(res)
+
+@app.route('/crypto', methods=['GET'])
+def get_stock_symbols():
+    res = fd.get_crypto_symbols()
+    return jsonify(res)
+
 @app.route('/', methods=['GET'])
 def hello():
     return jsonify({'message': 'Hello World'})
