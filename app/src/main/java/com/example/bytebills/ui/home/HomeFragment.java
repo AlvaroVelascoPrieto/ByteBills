@@ -2,6 +2,7 @@ package com.example.bytebills.ui.home;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,19 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
+import com.example.bytebills.controller.StockInfoWorker;
+import com.example.bytebills.controller.StocksUserWorker;
 import com.example.bytebills.databinding.FragmentHomeBinding;
 import com.example.bytebills.model.BillGroup;
 import com.example.bytebills.ui.addStock.AddStockFragment;
 import com.example.bytebills.ui.registration.RegistrationFragment;
+import com.example.bytebills.ui.stockvalue.StockValueActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDateTime;
@@ -31,7 +39,7 @@ public class HomeFragment extends Fragment {
     private StockAdapter adapter;
     private List<BillGroup> billGroupList;
     private FragmentHomeBinding binding;
-
+    private String TAG = "HomeFragment";
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         HomeViewModel homeViewModel =
@@ -45,11 +53,34 @@ public class HomeFragment extends Fragment {
         recyclerView = binding.recyclerViewBillGroups;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        //TODO: Fetch tasks from DB
         billGroupList = new ArrayList<BillGroup>();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            billGroupList.add(new BillGroup(0, "TESLA", "TSLA", LocalDateTime.now().toString()));
-        }
+        String username = MainActivity.username;
+
+        Data data = new Data.Builder()
+                .putString("username", username)
+                .build();
+
+        OneTimeWorkRequest stocksUserWork =
+                new OneTimeWorkRequest.Builder(StocksUserWorker.class)
+                        .setInputData(data)
+                        .build();
+
+
+        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(stocksUserWork.getId())
+                .observe(getViewLifecycleOwner(), status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String queryStatus = status.getOutputData().getString("value");
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            billGroupList.add(new BillGroup(0, "TESLA", "TSLA", LocalDateTime.now().toString()));
+                        }
+                    }
+                });
+
+        WorkManager.getInstance(requireContext()).enqueue(stocksUserWork);
+
+
+
 
         // Set up RecyclerView adapter
         adapter = new StockAdapter(billGroupList);

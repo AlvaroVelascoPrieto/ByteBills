@@ -19,13 +19,13 @@ public class StockInfoWorker extends Worker {
         String stock = data.getString("stock_id");
 
         try {
-            JSONObject json = new JSONObject();
-            json.put("stock", stock);
 
-            String returnValue = RemoteDBHandler.get("stock", json);
+            String returnValue = RemoteDBHandler.get("stock/" + stock);
+            returnValue = returnValue.substring(1, returnValue.length() - 1).replace("\\", "");
 
+            //TODO: Parse la lista de acciones
             Data outputData = new Data.Builder()
-                    .putString("value", String.valueOf(returnValue))
+                    .putString("", String.valueOf(returnValue))
                     .build();
             return Result.success(outputData);
 

@@ -57,7 +57,7 @@ def get_user_tracked_stocks(username):
     db = get_db_connection()
     cursor = db.cursor()
     try:
-        cursor.execute("SELECT * FROM stock_user WHERE username=%s", (username,))
+        cursor.execute("SELECT symbol, name FROM stocks s join stock_user su on s.symbol = su.stock_symbol WHERE su.username=%s", (username,))
         stocks = cursor.fetchall()
         response = jsonify(stocks)
         response.headers['Content-Length'] = str(len(response.get_data()))

@@ -33,6 +33,7 @@ import com.example.bytebills.ui.registration.RegistrationFragment;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
+    private String TAG = "MainActivity";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,12 +50,14 @@ public class LoginFragment extends Fragment {
             @SuppressLint("FragmentLiveDataObserve")
             @Override
             public void onClick(View v) {
-                //TODO: Check user credentials in DB
                 String usernameStr = username.getText().toString();
                 String passwordStr = password.getText().toString();
                 if(usernameStr.equals("admin") && passwordStr.equals("admin")){
                     //ADMIN
+                    Log.d(TAG, "Siguiente => MainActivity.username = 'admin'");
                     MainActivity.username = "admin";
+                    Log.d(TAG, "MainActivity.username = 'admin'");
+                    Log.d(TAG, "MainActivity.username => " + MainActivity.username);
 
                     Intent i = new Intent(getActivity(), MainActivity.class);
                     i.putExtra("username", username.getText().toString());

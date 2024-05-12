@@ -40,7 +40,6 @@ public class RemoteDBHandler {
     }
 
     public String post(String endpoint, @NonNull JSONObject json) {
-        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         HttpURLConnection conn = null;
 
@@ -94,14 +93,10 @@ public class RemoteDBHandler {
         return "Error";
     }
 
-    public static String get(String endpoint, @NonNull JSONObject json) throws ParseException {
-        remoteServerDirection = "http://85.58.82.92:5000/";
+    public static String get(String endpoint) throws ParseException {
         remoteServerDirection += endpoint;
-        remoteServerDirection += "/";
-        remoteServerDirection += json.get("stock");
-        System.out.println(remoteServerDirection);
+        Log.d(TAG, remoteServerDirection);
         HttpURLConnection conn = null;
-        JSONObject responseJSON ;
 
         try {
             String charset = "UTF-8";
@@ -131,7 +126,8 @@ public class RemoteDBHandler {
                 }
                 inputStream.close();
 
-                return result.substring(1, result.length() - 1).replace("\\", "");
+                Log.d(TAG, result.toString());
+                return result.toString();
             }
 
         } catch (ProtocolException e) {
