@@ -9,7 +9,11 @@ import androidx.work.WorkerParameters;
 
 import com.example.bytebills.MainActivity;
 
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StocksUserWorker extends Worker {
 
@@ -21,16 +25,26 @@ public class StocksUserWorker extends Worker {
         Data data = getInputData();
 
         String usernameMA = MainActivity.username;
-        Log.d(TAG, "MainActivity.username in StocksUserWorker -> " + usernameMA);
-        String username = data.getString("username");
-        Log.d(TAG, "StocksUserWorker username -> " + username);
 
         try {
             String returnValue = RemoteDBHandler.get("user-stocks/" + usernameMA);
+            List<String> strings = new ArrayList<String>();
+
+            JSONArray jsonArray = new JSONArray(returnValue);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONArray inner = jsonArray.getJSONArray(i);
+                for (int j = 0; j < inner.length(); j++) {
+                    String stock = inner.getString(j);
+                    strings.add(stock);
+                }
+            }
+
+            String[] dataArray = strings.toArray(new String[0]);
 
             Data outputData = new Data.Builder()
-                    .putString("value", String.valueOf(returnValue))
+                    .putStringArray("stocks", dataArray)
                     .build();
+
             return Result.success(outputData);
 
 

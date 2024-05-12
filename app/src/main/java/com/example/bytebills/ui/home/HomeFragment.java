@@ -69,24 +69,27 @@ public class HomeFragment extends Fragment {
         WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(stocksUserWork.getId())
                 .observe(getViewLifecycleOwner(), status -> {
                     if (status != null && status.getState().isFinished()) {
-                        String queryStatus = status.getOutputData().getString("value");
+                        String[] stocks = status.getOutputData().getStringArray("stocks");
+                        for (int i = 0; i < stocks.length; i = i + 2) {
+                            Log.d(TAG, stocks[i] + "   " + stocks[i + 1]);
+                            String title = stocks[i];
+                            String description = stocks[i + 1];
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                billGroupList.add(new BillGroup(0, title, description, LocalDateTime.now().toString()));
+                            }
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            billGroupList.add(new BillGroup(0, "TESLA", "TSLA", LocalDateTime.now().toString()));
+                            // Set up RecyclerView adapter
+                            adapter = new StockAdapter(billGroupList);
+                            recyclerView.setAdapter(adapter);
+
+                            recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
                         }
+
                     }
                 });
 
         WorkManager.getInstance(requireContext()).enqueue(stocksUserWork);
 
-
-
-
-        // Set up RecyclerView adapter
-        adapter = new StockAdapter(billGroupList);
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
 
         binding.resultCard.fab.setOnClickListener(new View.OnClickListener() {
             @Override

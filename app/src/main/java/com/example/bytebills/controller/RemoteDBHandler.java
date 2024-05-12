@@ -126,7 +126,6 @@ public class RemoteDBHandler {
                 }
                 inputStream.close();
 
-                Log.d(TAG, result.toString());
                 return result.toString();
             }
 
