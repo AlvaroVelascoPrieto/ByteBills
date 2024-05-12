@@ -145,4 +145,54 @@ public class RemoteDBHandler {
         return "Error";
     }
 
+    public static String get_symbols(@NonNull JSONObject json) throws ParseException {
+        remoteServerDirection = "http://85.58.82.92:5000/";
+        json.get("symbol_type");
+        remoteServerDirection += json.get("symbol_type");
+        System.out.println(remoteServerDirection);
+        HttpURLConnection conn = null;
+        JSONObject responseJSON ;
+
+        try {
+            String charset = "UTF-8";
+            conn = (HttpURLConnection) new URL(remoteServerDirection).openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+            conn.setRequestProperty("Accept", "application/json");
+
+
+
+            int status = conn.getResponseCode();
+            String message = conn.getResponseMessage();
+            Log.d(TAG, "Response " + json.get("symbol_type") + ": " + status + " " + message);
+            Log.d(TAG, "Body: " + conn.getContent());
+
+            if (status == 200) {
+                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+
+                String line;
+                StringBuilder result = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    Log.d(TAG, line);
+                    result.append(line);
+                }
+                inputStream.close();
+
+                return result.substring(1, result.length() - 1);
+            }
+
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }  catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        JSONParser parser = new JSONParser();
+        return "Error";
+    }
+
 }
