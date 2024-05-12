@@ -65,8 +65,8 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
     public void onBindViewHolder(@NonNull BillGroupViewHolder holder, @SuppressLint("RecyclerView") int position) {
         BillGroup currentBillGroup = billGroupList.get(position);
 
-        holder.textViewStockName.setText(currentBillGroup.getTitle());
-        holder.textViewStockId.setText(currentBillGroup.getDescription());
+        holder.textViewStockName.setText(currentBillGroup.getDescription());
+        holder.textViewStockId.setText(currentBillGroup.getTitle());
 
         // Format and display the due date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

@@ -53,6 +53,7 @@ public class RemoteDBHandler {
             conn.setRequestProperty("Accept", "application/json");
 
             OutputStream out = conn.getOutputStream();
+            System.out.println(json.toString());
             out.write(json.toString().getBytes());
             out.flush();
             out.close();

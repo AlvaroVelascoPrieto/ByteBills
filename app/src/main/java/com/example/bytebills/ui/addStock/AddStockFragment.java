@@ -162,7 +162,7 @@ public class AddStockFragment extends Fragment {
                     System.out.println(symbol.getSelectedItem().toString());
                     System.out.println(symbolJSON.get(symbol.getSelectedItem().toString()));
                     Data data = new Data.Builder()
-                            .putString("symbol", String.valueOf(symbolJSON.get(symbol.toString())))
+                            .putString("symbol", String.valueOf(symbolJSON.get(symbol.getSelectedItem().toString())))
                             .putString("username", username)
                             .build();
 

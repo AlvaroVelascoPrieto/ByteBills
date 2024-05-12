@@ -21,7 +21,9 @@ public class AddStockToUserWorker extends Worker {
         RemoteDBHandler dbHandler = new RemoteDBHandler();
 
         String username = data.getString("username");
+        System.out.println("SIMBOLO");
         String symbol = data.getString("symbol");
+        System.out.println(symbol);
 
         try {
             JSONObject json = new JSONObject();
