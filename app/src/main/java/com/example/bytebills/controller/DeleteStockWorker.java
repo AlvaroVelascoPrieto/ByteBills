@@ -26,7 +26,7 @@ public class DeleteStockWorker extends Worker {
             json.put("username", username);
             json.put("symbol", symbol);
 
-            String status = dbHandler.post("delete-stock-user", json);
+            String status = dbHandler.delete("delete-stock-user", json);
 
             Data outputData = new Data.Builder()
                     .putString("status", status)

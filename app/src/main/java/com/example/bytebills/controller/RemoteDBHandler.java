@@ -193,7 +193,8 @@ public class RemoteDBHandler {
         return "Error";
     }
 
-    public static String delete(String endpoint, @NonNull JSONObject json) {
+    public String delete(String endpoint, @NonNull JSONObject json) {
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         Log.d(TAG, "DEELETE " + remoteServerDirection);
         HttpURLConnection conn = null;

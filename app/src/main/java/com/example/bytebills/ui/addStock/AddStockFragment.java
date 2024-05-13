@@ -34,6 +34,7 @@ import com.example.bytebills.controller.StockInfoWorker;
 import com.example.bytebills.controller.SymbolnfoWorker;
 import com.example.bytebills.databinding.FragmentAddStockBinding;
 import com.example.bytebills.databinding.FragmentLoginBinding;
+import com.example.bytebills.ui.home.HomeFragment;
 import com.example.bytebills.ui.registration.RegistrationFragment;
 import com.example.bytebills.ui.stockvalue.StockValueActivity;
 
@@ -178,7 +179,12 @@ public class AddStockFragment extends Fragment {
                                     String addStockStatus = status.getOutputData().getString("status");
                                     try {
                                         if (addStockStatus.equals("Ok")) {
-                                            //TODO: Added Stock to user
+                                            //TODO: Added Stock to user, DONE, return to last screen
+                                            HomeFragment newHomeFragment = new HomeFragment();
+                                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                            fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newHomeFragment);
+                                            fragmentTransaction.addToBackStack(null);
+                                            fragmentTransaction.commit();
                                         } else {
                                             Toast.makeText(getActivity(), addStockStatus, Toast.LENGTH_SHORT).show();
                                         }

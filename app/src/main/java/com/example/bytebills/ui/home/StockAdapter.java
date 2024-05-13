@@ -112,12 +112,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
 
                         //TODO: delete stock with id from DB
                         WorkManager.getInstance().getWorkInfoByIdLiveData(deleteStockWork.getId())
-                                .observe(, status -> {
+                                .observe((LifecycleOwner) holder.itemView.getContext(), status -> {
                                     if (status != null && status.getState().isFinished()) {
                                         String deleteStockStatus = status.getOutputData().getString("status");
                                         try {
                                             if (deleteStockStatus.equals("Ok")) {
-                                                onDeleteClickListener.onDeleteClick(position);
+                                                billGroupList.remove(position);
+                                                notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, billGroupList.size());
                                             }
                                         } catch (NullPointerException e) {
                                             e.printStackTrace();
