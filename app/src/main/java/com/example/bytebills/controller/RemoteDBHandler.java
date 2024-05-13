@@ -193,4 +193,59 @@ public class RemoteDBHandler {
         return "Error";
     }
 
+    public static String delete(String endpoint, @NonNull JSONObject json) {
+        remoteServerDirection += endpoint;
+        Log.d(TAG, "DEELETE " + remoteServerDirection);
+        HttpURLConnection conn = null;
+
+        try {
+            conn = (HttpURLConnection) new URL(remoteServerDirection).openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setRequestMethod("DELETE");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+
+            OutputStream out = conn.getOutputStream();
+            Log.d(TAG, json.toString());
+            out.write(json.toString().getBytes());
+            out.flush();
+            out.close();
+
+            int status = conn.getResponseCode();
+            String message = conn.getResponseMessage();
+            Log.d(TAG, "Response " + endpoint + ": " + status + " " + message);
+            Log.d(TAG, "Body: " + conn.getContent());
+
+            if (status == 200) {
+                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+                String line;
+                StringBuilder result = new StringBuilder();
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    Log.d(TAG, line);
+                    result.append(line);
+                }
+                inputStream.close();
+
+                JSONParser parser = new JSONParser();
+                JSONObject responseJSON = (JSONObject) parser.parse(result.toString());
+
+                return responseJSON.get("status").toString();
+            }
+
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return "Error";
+    }
 }

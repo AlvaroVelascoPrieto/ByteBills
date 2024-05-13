@@ -12,25 +12,12 @@ CREATE TABLE IF NOT EXISTS stocks (
     name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS crypto (
-    symbol VARCHAR(10) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS stock_user (
-    id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
     stock_symbol VARCHAR(10) NOT NULL,
     FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
-);
-
-CREATE TABLE IF NOT EXISTS crypto_user (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
-    crypto_symbol VARCHAR(10) NOT NULL,
-    FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (crypto_symbol) REFERENCES crypto(symbol)
+    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol),
+    PRIMARY KEY (username, stock_symbol)
 );
 
 CREATE TABLE IF NOT EXISTS stock_transaction (
@@ -45,17 +32,4 @@ CREATE TABLE IF NOT EXISTS stock_transaction (
     sell_timestamp TIMESTAMP,
     FOREIGN KEY (username) REFERENCES users(username),
     FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
-);
-
-CREATE TABLE IF NOT EXISTS crypto_transaction (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
-    crypto_symbol VARCHAR(10) NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
-    quantity INT NOT NULL,
-    buy_timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    sold BOOLEAN NOT NULL DEFAULT FALSE,
-    sell_timestamp TIMESTAMP,
-    FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (crypto_symbol) REFERENCES crypto(symbol)
 );

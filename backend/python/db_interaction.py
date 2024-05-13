@@ -56,17 +56,41 @@ def db_login(data):
 ##################
 
 def db_add_stock_to_user(data):
+    
+    print("DATA ========== \n\n\n\n")
+    print(data)
+    print("\n\n\n\nDATA ========== ")
+
     symbol = data['symbol']
     username = data['username']
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM stocks WHERE symbol = %s", data['symbol'])
+    cursor.execute("SELECT * FROM stocks WHERE symbol =%s", (symbol,))
     stock = cursor.fetchone()
     if not stock:
-        cursor.execute("INSERT INTO stocks VALUES (%s, %s)", symbol, "placeholder nombre compañía")
+        cursor.execute("INSERT INTO stocks VALUES (%s, %s)", (symbol, "placeholder nombre compañía"))
 
     try:
         cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (username, symbol))
+        db.commit()
+        response = {'status': 'Ok'}
+        return response
+    except mysql.connector.IntegrityError:
+        response = {'status': 'Ok'}
+
+    except mysql.connector.Error as err:
+        response = {'status': err.msg}
+        return response
+
+def db_delete_stock_user(data):
+    print("DELETE STOCK USER")
+    print("DATA: ", data)
+    symbol = data['symbol']
+    username = data['username']
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("DELETE FROM stock_user WHERE username=%s AND stock_symbol=%s", (username, symbol))
         db.commit()
         response = {'status': 'Ok'}
         return response

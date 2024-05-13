@@ -70,8 +70,16 @@ def get_user_tracked_stocks(username):
 
 @app.route('/add-stock-to-user', methods=['POST'])
 def add_symbol_to_user():
+
+    print("DATA ========== \n\n\n\n")
+    print(request.get_json())
+    print("\n\n\n DATA ===========")
     data = request.get_json()
+    print("DATA ========== \n\n\n\n")
+    print(data)
+    print("\n\n\n\n DATA")
     response = db_interaction.db_add_stock_to_user(data)
+    response = jsonify(response)
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response, 200
 
@@ -105,6 +113,14 @@ def add_transaction_to_user():
         response = jsonify({'status': err.msg})
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
+
+@app.route('/delete-stock-user', methods=['DELETE'])
+def delete_transaction_user():
+    data = request.get_json()
+    response = db_interaction.db_delete_stock_user(data)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):

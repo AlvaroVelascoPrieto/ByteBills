@@ -2,6 +2,7 @@ package com.example.bytebills.ui.home;
 
 import static android.app.PendingIntent.getActivity;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
 import static androidx.core.content.ContextCompat.startActivities;
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -14,10 +15,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AlertDialog;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
+import com.example.bytebills.controller.DeleteStockWorker;
 import com.example.bytebills.model.BillGroup;
 import com.example.bytebills.ui.stockvalue.StockValueActivity;
 
@@ -94,8 +101,30 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Call onDeleteClick method to handle task deletion
-                        final int id = currentBillGroup.getId();
+                        String symbol = currentBillGroup.getTitle();
+                        String username = MainActivity.username;
+                        OneTimeWorkRequest deleteStockWork = new OneTimeWorkRequest.Builder(DeleteStockWorker.class)
+                                .setInputData(new Data.Builder()
+                                        .putString("username", username)
+                                        .putString("symbol", symbol)
+                                        .build())
+                                .build();
+
                         //TODO: delete stock with id from DB
+                        WorkManager.getInstance().getWorkInfoByIdLiveData(deleteStockWork.getId())
+                                .observe(, status -> {
+                                    if (status != null && status.getState().isFinished()) {
+                                        String deleteStockStatus = status.getOutputData().getString("status");
+                                        try {
+                                            if (deleteStockStatus.equals("Ok")) {
+                                                onDeleteClickListener.onDeleteClick(position);
+                                            }
+                                        } catch (NullPointerException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        WorkManager.getInstance().enqueue(deleteStockWork);
                     }
                 });
                 String cancel = v.getContext().getString(R.string.cancel);
