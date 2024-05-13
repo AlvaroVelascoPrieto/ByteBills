@@ -106,6 +106,14 @@ def add_transaction_to_user():
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
 
+@app.route('/delete-stock-user', methods=['DELETE'])
+def delete_transaction_user():
+    data = request.get_json()
+    response = db_interaction.db_delete_stock_user(data)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
+
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     db = get_db_connection()

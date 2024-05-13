@@ -74,3 +74,20 @@ def db_add_stock_to_user(data):
     except mysql.connector.Error as err:
         response = {'status': err.msg}
         return response
+
+def db_delete_stock_user(data):
+    print("DELETE STOCK USER")
+    print("DATA: ", data)
+    symbol = data['symbol']
+    username = data['username']
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("DELETE FROM stock_user WHERE username=%s AND stock_symbol=%s", (username, symbol))
+        db.commit()
+        response = {'status': 'Ok'}
+        return response
+
+    except mysql.connector.Error as err:
+        response = {'status': err.msg}
+        return response

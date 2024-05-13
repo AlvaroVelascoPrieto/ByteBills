@@ -94,7 +94,7 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Call onDeleteClick method to handle task deletion
-                        final int id = currentBillGroup.getId();
+                        String id = currentBillGroup.getTitle();
                         //TODO: delete stock with id from DB
                     }
                 });
