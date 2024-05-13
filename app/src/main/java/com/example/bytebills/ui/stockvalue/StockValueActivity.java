@@ -61,7 +61,7 @@ public class StockValueActivity extends AppCompatActivity {
     private DividenAdapter horizontalAdapter;
     LineChart volumeReportChart;
 
-
+    public static String stock_id;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +72,7 @@ public class StockValueActivity extends AppCompatActivity {
         ArrayList<String> dates = new ArrayList<>();
         ArrayList<Double> allAmounts = new ArrayList<>();
 
-        String stock_id = getIntent().getStringExtra("stockSymbol");
+        stock_id = getIntent().getStringExtra("stockSymbol");
         System.out.println("STOCKID");
         System.out.println(stock_id);
         TextView title = findViewById(R.id.tvSesionGraph);

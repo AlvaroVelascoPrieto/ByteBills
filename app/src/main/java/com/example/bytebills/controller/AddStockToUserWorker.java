@@ -23,12 +23,14 @@ public class AddStockToUserWorker extends Worker {
         String username = data.getString("username");
         System.out.println("SIMBOLO");
         String symbol = data.getString("symbol");
+        String name = data.getString("name");
         System.out.println(symbol);
 
         try {
             JSONObject json = new JSONObject();
             json.put("username", username);
             json.put("symbol", symbol);
+            json.put("name", name);
 
             String status = dbHandler.post("add-stock-to-user", json);
 

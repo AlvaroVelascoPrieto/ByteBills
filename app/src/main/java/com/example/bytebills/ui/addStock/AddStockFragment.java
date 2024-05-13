@@ -164,6 +164,7 @@ public class AddStockFragment extends Fragment {
                     Data data = new Data.Builder()
                             .putString("symbol", String.valueOf(symbolJSON.get(symbol.getSelectedItem().toString())))
                             .putString("username", username)
+                            .putString("name", symbol.getSelectedItem().toString())
                             .build();
 
                     OneTimeWorkRequest addStockToUserWork =
