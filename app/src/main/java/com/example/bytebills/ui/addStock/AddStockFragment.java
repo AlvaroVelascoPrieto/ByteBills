@@ -179,7 +179,7 @@ public class AddStockFragment extends Fragment {
                                     String addStockStatus = status.getOutputData().getString("status");
                                     try {
                                         if (addStockStatus.equals("Ok")) {
-                                            //TODO: Added Stock to user, DONE, return to last screen
+                                            //TODO: Return to last screen and delete the old fragment, rn the new one is added on top of the old one.
                                             HomeFragment newHomeFragment = new HomeFragment();
                                             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                                             fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newHomeFragment);
