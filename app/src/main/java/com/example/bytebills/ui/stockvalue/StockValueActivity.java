@@ -22,6 +22,7 @@ import androidx.work.WorkManager;
 import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
 import com.example.bytebills.controller.StockInfoWorker;
+import com.example.bytebills.controller.StocksUserTransactionsWorker;
 import com.example.bytebills.controller.StocksUserWorker;
 import com.example.bytebills.model.BillGroup;
 import com.example.bytebills.ui.addTransaction.AddTransactionFragment;
@@ -133,20 +134,20 @@ public class StockValueActivity extends AppCompatActivity {
                 .putString("symbol", stock_id)
                 .build();
 
-        OneTimeWorkRequest stocksUserWork =
-                new OneTimeWorkRequest.Builder(StocksUserWorker.class)
+        OneTimeWorkRequest stockTransacitonsUserWork =
+                new OneTimeWorkRequest.Builder(StocksUserTransactionsWorker.class)
                         .setInputData(data2)
                         .build();
 
 
-        WorkManager.getInstance().getWorkInfoByIdLiveData(stocksUserWork.getId())
+        WorkManager.getInstance().getWorkInfoByIdLiveData(stockTransacitonsUserWork.getId())
                 .observe(StockValueActivity.this, status -> {
                     if (status != null && status.getState().isFinished()) {
                         System.out.println(status);
                     }
                 });
 
-        WorkManager.getInstance().enqueue(stocksUserWork);
+        WorkManager.getInstance().enqueue(stockTransacitonsUserWork);
 
 
 

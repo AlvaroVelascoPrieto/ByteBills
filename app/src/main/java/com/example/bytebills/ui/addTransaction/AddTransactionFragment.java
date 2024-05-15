@@ -146,6 +146,22 @@ public class AddTransactionFragment extends AppCompatActivity {
             }
         });
 
+        dividendTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantity.setVisibility(View.INVISIBLE);
+                price.setHint("Amount");
+            }
+        });
+
+        purchaseTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantity.setVisibility(View.VISIBLE);
+                price.setHint("Price");
+            }
+        });
+
 
 
     }
