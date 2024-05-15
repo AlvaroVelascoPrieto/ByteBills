@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS stock_user (
 );
 
 CREATE TABLE IF NOT EXISTS stock_transaction (
-    id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(255) NOT NULL,
     stock_symbol VARCHAR(10) NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
@@ -31,5 +30,18 @@ CREATE TABLE IF NOT EXISTS stock_transaction (
     sell_price DECIMAL(10, 2),
     sell_timestamp TIMESTAMP,
     FOREIGN KEY (username) REFERENCES users(username),
-    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol)
+    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol),
+    PRIMARY KEY (username, stock_symbol, buy_timestamp)
 );
+
+CREATE TABLE IF NOT EXISTS dividend (
+    received_on TIMESTAMP NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    stock_symbol VARCHAR(255) NOT NULL,
+    value_euros DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (stock_symbol) REFERENCES stocks(symbol),
+    FOREIGN KEY (username) REFERENCES users(username),
+    PRIMARY KEY (username, received_on, stock_symbol)
+);
+
+INSERT INTO users VALUES ('admin', 'admin', 'admin')
