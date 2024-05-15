@@ -1,5 +1,7 @@
 from flask import jsonify
 import mysql.connector
+import logging
+import utils
 
 #Aqui se hacen las conexiones con la BD y se devuelve el diccionario Python que indica el estado de la ejecucion SQL
 
@@ -63,12 +65,13 @@ def db_add_stock_to_user(data):
 
     symbol = data['symbol']
     username = data['username']
+    stock_name = data['name']
     db = get_db_connection()
     cursor = db.cursor()
     cursor.execute("SELECT * FROM stocks WHERE symbol =%s", (symbol,))
     stock = cursor.fetchone()
     if not stock:
-        cursor.execute("INSERT INTO stocks VALUES (%s, %s)", (symbol, "placeholder nombre compañía"))
+        cursor.execute("INSERT INTO stocks VALUES (%s, %s)", (symbol, stock_name))
 
     try:
         cursor.execute("INSERT INTO stock_user (username, stock_symbol) VALUES (%s, %s)", (username, symbol))
@@ -77,6 +80,7 @@ def db_add_stock_to_user(data):
         return response
     except mysql.connector.IntegrityError:
         response = {'status': 'Ok'}
+        return response
 
     except mysql.connector.Error as err:
         response = {'status': err.msg}
@@ -98,3 +102,63 @@ def db_delete_stock_user(data):
     except mysql.connector.Error as err:
         response = {'status': err.msg}
         return response
+
+def db_add_transaction_to_user(data):
+    db = get_db_connection()
+    cursor = db.cursor()
+    username = data['username']
+    symbol = data['symbol']
+    price = data['price']
+    qty = data['quantity']
+    ts = utils.parse_date(data['buy_timestamp'])
+    try:
+        cursor.execute("INSERT INTO stock_transaction (username, stock_symbol, price, quantity, buy_timestamp) VALUES (%s, %s, %s, %s, %s)", (username, symbol, float(price), float(qty), ts))
+        db.commit()
+        return {'status': 'Ok'}
+    except mysql.connector.Error as err:
+        return {'status': err.msg}
+    
+    except:
+        return {'status': 'Error'}
+
+def db_add_dividend_to_user(data):
+    db = get_db_connection()
+    cursor = db.cursor()
+    username = data['username']
+    symbol = data['symbol']
+    value_euros = float(data['amount'])
+    timestamp = utils.parse_date(data['timestamp'])
+    try:
+        cursor.execute('INSERT INTO dividend (received_on, username, stock_symbol, value_euros) VALUES (%s, %s, %s, %s)', (timestamp, username, symbol, value_euros))
+        db.commit()
+        logging.log(logging.INFO, 'Dividend added to user ' + username)
+        return {'status': 'Ok'}
+    except mysql.connector.Error as err:
+        logging.log(logging.ERROR, err.msg)        
+        return {'status': err.msg}
+
+def db_get_user_transactions(data):
+    data_list = utils.parse_endpoint_user_stock(data)
+    username = data_list[0]
+    symbol = data_list[1]
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT * FROM stock_transaction WHERE username = %s AND stock_symbol = %s", (username, symbol))
+        transactions = cursor.fetchall()
+        cursor.execute("SELECT * FROM dividend WHERE username = %s AND stock_symbol = %s", (username, symbol))
+        dividends = cursor.fetchall()
+        transactions += dividends
+        return transactions
+    except mysql.connector.Error as err:
+        return {'status': err.msg}
+        
+def db_get_user_dividends(username, symbol):
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT * FROM dividend WHERE username = %s AND stock_symbol = %s", (username, symbol))
+        dividends = cursor.fetchall()
+        return dividends
+    except mysql.connector.Error as err:
+        return {'status': err.msg}

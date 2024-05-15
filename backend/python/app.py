@@ -83,36 +83,13 @@ def add_symbol_to_user():
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response, 200
 
-@app.route('/user-transactions/<username>', methods=['GET'])
-def get_user_stocks(username):
-    db = get_db_connection()
-    cursor = db.cursor()
-    try:
-        cursor.execute("SELECT * FROM stock_transaction WHERE username = %s", (username))
-        stocks = cursor.fetchall()
-        response = jsonify(stocks)
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
-    except mysql.connector.Error as err:
-        response = jsonify({'status': err.msg})
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
-
 @app.route('/add-transaction-to-user', methods=['POST'])
 def add_transaction_to_user():
     data = request.get_json()
-    db = get_db_connection()
-    cursor = db.cursor()
-    try:
-        cursor.execute("INSERT INTO stock_transaction (username, stock_symbol, price, quantity, buy_timestamp, sold) VALUES (%s, %s, %f, %f, %ld, %b)", (data['username'], data['symbol'], data['price'], data['quantity'], data['buy_timestamp'], False))
-        db.commit()
-        response = jsonify({'status': 'Ok'})
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
-    except mysql.connector.Error as err:
-        response = jsonify({'status': err.msg})
-        response.headers['Content-Length'] = str(len(response.get_data()))
-        return response, 200
+    response = db_interaction.db_add_transaction_to_user(data)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
 
 @app.route('/delete-stock-user', methods=['DELETE'])
 def delete_transaction_user():
@@ -122,30 +99,27 @@ def delete_transaction_user():
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response, 200
 
-@app.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    db = get_db_connection()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM users WHERE id=%s", (user_id,))
-    user = cursor.fetchone()
-    return jsonify({'id': user[0], 'name': user[1], 'email': user[2]})
-
-@app.route('/users/<int:user_id>', methods=['PUT'])
-def update_user(user_id):
+@app.route('/add-dividend-to-user', methods=['POST'])
+def add_dividend_to_user():
     data = request.get_json()
-    db = get_db_connection()
-    cursor = db.cursor()
-    cursor.execute("UPDATE users SET name=%s, email=%s WHERE id=%s", (data['name'], data['email'], user_id))
-    db.commit()
-    return jsonify({'id': user_id, 'name': data['name'], 'email': data['email']})
+    response = db_interaction.db_add_dividend_to_user(data)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
 
-@app.route('/users/<int:user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    db = get_db_connection()
-    cursor = db.cursor()
-    cursor.execute("DELETE FROM users WHERE id=%s", (user_id,))
-    db.commit()
-    return '', 204
+@app.route('/user-transactions/<data>', methods=['GET'])
+def get_user_stocks(data):
+    response = db_interaction.db_get_user_transactions(data)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
+
+@app.route('/user-dividends/<username>/<symbol>', methods=['GET'])
+def get_user_dividends(username, symbol):
+    response = db_interaction.db_get_user_dividends(username, symbol)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
 
 @app.route('/stock/<stock_id>', methods=['GET'])
 def get_stock(stock_id):
