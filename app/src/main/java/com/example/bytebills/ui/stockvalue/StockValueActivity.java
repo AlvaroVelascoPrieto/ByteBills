@@ -1,11 +1,15 @@
 package com.example.bytebills.ui.stockvalue;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +19,13 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.bytebills.MainActivity;
 import com.example.bytebills.R;
 import com.example.bytebills.controller.StockInfoWorker;
+import com.example.bytebills.controller.StocksUserWorker;
+import com.example.bytebills.model.BillGroup;
 import com.example.bytebills.ui.addTransaction.AddTransactionFragment;
+import com.example.bytebills.ui.home.StockAdapter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.LimitLine;
@@ -111,6 +119,41 @@ public class StockValueActivity extends AppCompatActivity {
                 });
 
         WorkManager.getInstance().enqueue(stockInfoWork);
+
+
+
+
+
+
+
+        String username = MainActivity.username;
+
+        Data data2 = new Data.Builder()
+                .putString("username", username)
+                .putString("symbol", stock_id)
+                .build();
+
+        OneTimeWorkRequest stocksUserWork =
+                new OneTimeWorkRequest.Builder(StocksUserWorker.class)
+                        .setInputData(data2)
+                        .build();
+
+
+        WorkManager.getInstance().getWorkInfoByIdLiveData(stocksUserWork.getId())
+                .observe(StockValueActivity.this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        System.out.println(status);
+                    }
+                });
+
+        WorkManager.getInstance().enqueue(stocksUserWork);
+
+
+
+
+
+
+
 
 
 
