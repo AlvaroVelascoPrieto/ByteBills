@@ -1,6 +1,7 @@
 package com.example.bytebills.controller;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.work.Data;
 import androidx.work.Worker;
@@ -9,6 +10,8 @@ import androidx.work.WorkerParameters;
 import org.json.simple.JSONObject;
 
 public class StockInfoWorker extends Worker {
+
+    private String TAG = "StockInfoWorker";
 
     public StockInfoWorker(Context context, WorkerParameters workerParameters) {
         super(context, workerParameters);
@@ -22,6 +25,7 @@ public class StockInfoWorker extends Worker {
 
             String returnValue = RemoteDBHandler.get("stock/" + stock);
             returnValue = returnValue.substring(1, returnValue.length() - 1).replace("\\", "");
+            Log.d(TAG, returnValue);
 
             Data outputData = new Data.Builder()
                     .putString("value", String.valueOf(returnValue))

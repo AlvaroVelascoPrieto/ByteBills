@@ -160,6 +160,15 @@ def db_get_user_transactions(data):
 
     except mysql.connector.Error as err:
         return {'status': err.msg}
-
     except Exception as e:
         return {'status': str(e)}
+        
+def db_get_all_fcm_tokens():
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT fcm_token FROM users")
+        tokens = cursor.fetchall()
+        return tokens
+    except mysql.connector.Error as err:
+        return {'status': err.msg}

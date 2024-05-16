@@ -21,12 +21,14 @@ public class RegisterWorker extends Worker {
         String username = data.getString("username");
         String email = data.getString("email");
         String password = data.getString("password");
+        String fcm_token = data.getString("fcm_token");
 
         try {
             JSONObject json = new JSONObject();
             json.put("username", username);
             json.put("email", email);
             json.put("password", password);
+            json.put("fcm_token", fcm_token);
 
             String status = dbHandler.post("register", json);
 

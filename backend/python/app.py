@@ -23,7 +23,7 @@ def create_user():
     db = get_db_connection()
     cursor = db.cursor()
     try:
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (data['username'], data['email'], data['password']))
+        cursor.execute("INSERT INTO users (username, email, password, fcm_token) VALUES (%s, %s, %s, %s)", (data['username'], data['email'], data['password'], data['fcm_token']))
         db.commit()
         response = jsonify({'status': 'Ok'})
         response.headers['Content-Length'] = str(len(response.get_data()))
@@ -70,14 +70,7 @@ def get_user_tracked_stocks(username):
 
 @app.route('/add-stock-to-user', methods=['POST'])
 def add_symbol_to_user():
-
-    print("DATA ========== \n\n\n\n")
-    print(request.get_json())
-    print("\n\n\n DATA ===========")
     data = request.get_json()
-    print("DATA ========== \n\n\n\n")
-    print(data)
-    print("\n\n\n\n DATA")
     response = db_interaction.db_add_stock_to_user(data)
     response = jsonify(response)
     response.headers['Content-Length'] = str(len(response.get_data()))

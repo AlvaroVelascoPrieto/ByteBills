@@ -51,6 +51,7 @@ public class RemoteDBHandler {
             conn.setDoOutput(true);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Connection", "close");
 
             OutputStream out = conn.getOutputStream();
             System.out.println(json.toString());
@@ -64,22 +65,42 @@ public class RemoteDBHandler {
             Log.d(TAG, "Body: " + conn.getContent());
 
             if (status == 200) {
-                BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                try {
+                    BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
-                String line;
-                StringBuilder result = new StringBuilder();
+                    String line;
+                    StringBuilder result = new StringBuilder();
 
-                while ((line = bufferedReader.readLine()) != null) {
-                    Log.d(TAG, line);
-                    result.append(line);
+                    while ((line = bufferedReader.readLine()) != null) {
+                        Log.d(TAG, line);
+                        result.append(line);
+                    }
+                    inputStream.close();
+
+                    JSONParser parser = new JSONParser();
+                    JSONObject responseJSON = (JSONObject) parser.parse(result.toString());
+
+                    return responseJSON.get("status").toString();
+                } catch (java.net.ProtocolException e) {
+                    BufferedInputStream inputStream = new BufferedInputStream(conn.getInputStream());
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+
+                    String line;
+                    String result = "";
+
+                    while ((line = bufferedReader.readLine()) != null) {
+                        Log.d(TAG, line);
+                        result += line;
+                    }
+                    inputStream.close();
+
+                    JSONParser parser = new JSONParser();
+                    JSONObject responseJSON = (JSONObject) parser.parse(result);
+
+                    return responseJSON.get("status").toString();
                 }
-                inputStream.close();
 
-                JSONParser parser = new JSONParser();
-                JSONObject responseJSON = (JSONObject) parser.parse(result.toString());
-
-                return responseJSON.get("status").toString();
             }
 
         } catch (ProtocolException e) {
@@ -108,7 +129,7 @@ public class RemoteDBHandler {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
             conn.setRequestProperty("Accept", "application/json");
-
+            conn.setRequestProperty("Connection", "close");
 
 
             int status = conn.getResponseCode();
@@ -121,15 +142,15 @@ public class RemoteDBHandler {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
                 String line;
-                StringBuilder result = new StringBuilder();
+                String result = "";
 
                 while ((line = bufferedReader.readLine()) != null) {
                     Log.d(TAG, line);
-                    result.append(line);
+                    result += line;
                 }
                 inputStream.close();
 
-                return result.toString();
+                return result;
             }
 
         } catch (ProtocolException e) {
@@ -196,7 +217,7 @@ public class RemoteDBHandler {
     public String delete(String endpoint, @NonNull JSONObject json) {
         remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
-        Log.d(TAG, "DEELETE " + remoteServerDirection);
+        Log.d(TAG, "DELETE " + remoteServerDirection);
         HttpURLConnection conn = null;
 
         try {
@@ -223,16 +244,16 @@ public class RemoteDBHandler {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
                 String line;
-                StringBuilder result = new StringBuilder();
+                String result = "";
 
                 while ((line = bufferedReader.readLine()) != null) {
                     Log.d(TAG, line);
-                    result.append(line);
+                    result += line;
                 }
                 inputStream.close();
 
                 JSONParser parser = new JSONParser();
-                JSONObject responseJSON = (JSONObject) parser.parse(result.toString());
+                JSONObject responseJSON = (JSONObject) parser.parse(result);
 
                 return responseJSON.get("status").toString();
             }
