@@ -171,7 +171,7 @@ public class StockValueActivity extends AppCompatActivity {
                             } else if (elementos.size()==8) {
                                 System.out.println("Compra");
                                 purchaseDateList.add(elementos.get(4));
-                                purchasePriceList.add(elementos.get(2));
+                                purchasePriceList.add(elementos.get(2).replaceAll("\"",""));
                                 purchaseValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))));
                                 currentValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice));
                                 differenceList.add(String.format("%.2f",100.0f*(((Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice)/(Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))))-1.0f))+"%");
