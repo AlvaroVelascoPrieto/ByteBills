@@ -169,6 +169,7 @@ public class StockValueActivity extends AppCompatActivity {
                                 System.out.println("Dividendo");
                                 dividendDateList.add(elementos.get(0));
                                 dividendValueList.add(elementos.get(3));
+                                totalCurrentPrice += Float.valueOf(elementos.get(3));
                                 dividendPercentageList.add(String.format("%.2f",1-(Float.valueOf(elementos.get(3).replaceAll("\"",""))/currentPrice))+"%");
                             } else if (elementos.size()==8) {
                                 System.out.println("Compra");
