@@ -6,3 +6,4 @@ requests_html
 pandas
 lxml_html_clean
 unidecode
+firebase-admin

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1077595532706",
+    "project_id": "bytebills",
+    "storage_bucket": "bytebills.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077595532706:android:1a6d136dcb83a2553f16fb",
+        "android_client_info": {
+          "package_name": "com.example.bytebills"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDB-xLZQxjhE7iJrIUpLVvO1tY__SBx6ug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

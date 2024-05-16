@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
 
     public static String username;
+    public static String fcm_token;
 
 
     @Override

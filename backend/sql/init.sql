@@ -4,7 +4,8 @@ USE bytebills;
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(255) PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL
+    password VARCHAR(255) NOT NULL,
+    fcm_token VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS stocks (
@@ -44,4 +45,4 @@ CREATE TABLE IF NOT EXISTS dividend (
     PRIMARY KEY (username, received_on, stock_symbol)
 );
 
-INSERT INTO users VALUES ('admin', 'admin', 'admin')
+INSERT INTO users VALUES ('admin', 'admin', 'admin', NULL);

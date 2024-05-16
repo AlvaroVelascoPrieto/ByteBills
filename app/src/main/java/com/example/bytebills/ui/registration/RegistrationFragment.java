@@ -1,7 +1,9 @@
 package com.example.bytebills.ui.registration;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +52,15 @@ public class  RegistrationFragment extends Fragment {
                     Toast.makeText(getActivity(), "Passwords do not match.", Toast.LENGTH_SHORT).show();
                 }else{ //Peticion asincrona al servidor remoto con la base de datos
 
+                    SharedPreferences prefs = getActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                    String fcm_token = prefs.getString("fcm_token", null);
+
+
                     Data data = new Data.Builder()
                             .putString("username", username)
                             .putString("email", email)
                             .putString("password", password)
+                            .putString("fcm_token", fcm_token)
                             .build();
 
                     OneTimeWorkRequest registerWork =
