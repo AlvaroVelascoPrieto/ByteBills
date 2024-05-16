@@ -162,3 +162,13 @@ def db_get_user_dividends(username, symbol):
         return dividends
     except mysql.connector.Error as err:
         return {'status': err.msg}
+
+def db_get_all_fcm_tokens():
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute("SELECT fcm_token FROM users")
+        tokens = cursor.fetchall()
+        return tokens
+    except mysql.connector.Error as err:
+        return {'status': err.msg}

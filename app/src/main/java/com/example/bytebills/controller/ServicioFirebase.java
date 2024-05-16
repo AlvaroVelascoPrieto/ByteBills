@@ -1,4 +1,4 @@
-package com.example.bytebills.model;
+package com.example.bytebills.controller;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -31,6 +31,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
         saveTokenToPrefs(token);
+        MainActivity.fcm_token = token;
     }
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
