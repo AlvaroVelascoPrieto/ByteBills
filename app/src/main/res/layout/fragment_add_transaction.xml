@@ -16,7 +16,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Add transaction"
+        android:text="@string/add_transaction"
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold" />
@@ -31,7 +31,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="0dp"
         android:gravity="center"
-        android:text="TransactionType"
+        android:text="@string/transactiontype"
         android:textColor="@color/white"
         android:textSize="20dp" />
 
@@ -55,7 +55,7 @@
             android:layout_gravity="center"
             android:checked="false"
             android:padding="4dp"
-            android:text="Dividend"
+            android:text="@string/dividend"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="18sp" />
@@ -69,7 +69,7 @@
             android:layout_marginRight="20dp"
             android:checked="false"
             android:padding="4dp"
-            android:text="Purchase"
+            android:text="@string/purchase"
             android:inputType="numberDecimal"
             android:textColor="@color/white"
             android:textAlignment="center"
@@ -88,7 +88,7 @@
         android:background="#30ffffff"
         android:drawableLeft="@drawable/baseline_auto_graph_24"
         android:drawablePadding="20dp"
-        android:hint="Stock Quantity"
+        android:hint="@string/stock_quantity"
         android:padding="20dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
@@ -107,7 +107,7 @@
         android:background="#30ffffff"
         android:drawableLeft="@drawable/baseline_euro_symbol_24"
         android:drawablePadding="20dp"
-        android:hint="Stock Price"
+        android:hint="@string/stock_price"
         android:inputType="numberDecimal"
         android:padding="20dp"
         android:textColor="@color/white"
@@ -125,7 +125,7 @@
         android:layout_below="@id/price"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/baseline_auto_graph_24"
-        android:hint="Date"
+        android:hint="@string/date"
         android:focusable="false"
         android:inputType="date"
         android:clickable="true"
@@ -145,7 +145,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/design_default_color_secondary"
-        android:text="ADD TRANSACTION" />
+        android:text="@string/add_transaction_2" />
 
 
 

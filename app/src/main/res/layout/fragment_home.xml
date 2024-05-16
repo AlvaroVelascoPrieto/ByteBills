@@ -10,16 +10,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">∑
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewBillGroups"
-        android:layout_width="match_parent"
-        android:layout_height="530dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <include
-            android:id="@+id/result_card"
-            layout="@layout/result_card" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewBillGroups"
+            android:layout_width="match_parent"
+            android:layout_height="640dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            app:srcCompat="@drawable/baseline_add_24" />
     </LinearLayout>
 </RelativeLayout>

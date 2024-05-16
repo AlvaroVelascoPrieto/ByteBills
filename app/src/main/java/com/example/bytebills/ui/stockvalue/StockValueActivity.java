@@ -2,7 +2,12 @@ package com.example.bytebills.ui.stockvalue;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import static com.example.bytebills.Preferences.DEFAULT_LANGUAGE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.os.Build;
@@ -13,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Data;
@@ -48,12 +54,16 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class StockValueActivity extends AppCompatActivity {
+
     private RecyclerView rvVertical, rvHorizontal;
     private ArrayList<String> dividendDateList;
     private ArrayList<String> dividendValueList;
@@ -71,6 +81,7 @@ public class StockValueActivity extends AppCompatActivity {
     LineChart volumeReportChart;
 
     public static String stock_id;
+    private Float currentPrice = 0.0f;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,8 +93,6 @@ public class StockValueActivity extends AppCompatActivity {
         ArrayList<Double> allAmounts = new ArrayList<>();
 
         stock_id = getIntent().getStringExtra("stockSymbol");
-        System.out.println("STOCKID");
-        System.out.println(stock_id);
         TextView title = findViewById(R.id.tvSesionGraph);
         title.setText(stock_id);
         Data data = new Data.Builder()
@@ -102,17 +111,17 @@ public class StockValueActivity extends AppCompatActivity {
                         String queryStatus = status.getOutputData().getString("value");
                         try {
                             String dataValues =status.getOutputData().getString("value");
-
                             System.out.println("GOO");
                             System.out.println(dataValues);
-                            String [] valueList = dataValues.replace("{","").replace("}","").split(",");
-                            for (String value: valueList){
-                                dates.add(value.split("\":\"")[0].replace("\"",""));
-                                allAmounts.add(Double.valueOf(value.split("\":\"")[1].replace("\"","")));
+                            String[] valueList = dataValues.replace("{", "").replace("}", "").split(",");
+                            for (String value : valueList) {
+                                dates.add(value.split("\":\"")[0].replace("\"", ""));
+                                allAmounts.add(Double.valueOf(value.split("\":\"")[1].replace("\"", "")));
                             }
                             System.out.println(allAmounts);
                             renderData(dates, allAmounts);
-                        } catch (NullPointerException e){
+
+                        } catch (NullPointerException | IndexOutOfBoundsException e){
                             System.out.println("NO DATA");
                         }
 
@@ -121,42 +130,7 @@ public class StockValueActivity extends AppCompatActivity {
 
         WorkManager.getInstance().enqueue(stockInfoWork);
 
-
-
-
-
-
-
         String username = MainActivity.username;
-
-        Data data2 = new Data.Builder()
-                .putString("username", username)
-                .putString("symbol", stock_id)
-                .build();
-
-        OneTimeWorkRequest stockTransacitonsUserWork =
-                new OneTimeWorkRequest.Builder(StocksUserTransactionsWorker.class)
-                        .setInputData(data2)
-                        .build();
-
-
-        WorkManager.getInstance().getWorkInfoByIdLiveData(stockTransacitonsUserWork.getId())
-                .observe(StockValueActivity.this, status -> {
-                    if (status != null && status.getState().isFinished()) {
-                        System.out.println(status);
-                    }
-                });
-
-        WorkManager.getInstance().enqueue(stockTransacitonsUserWork);
-
-
-
-
-
-
-
-
-
 
         volumeReportChart = findViewById(R.id.reportingChart);
 
@@ -172,36 +146,57 @@ public class StockValueActivity extends AppCompatActivity {
         differenceList = new ArrayList<>();
         opStateList = new ArrayList<>();
 
-        for (int i = 1; i <= 50; i++) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                dividendDateList.add(LocalDateTime.now().minusDays(i).toString());
-                dividendValueList.add(String.valueOf(40.3*i) + "€");
-                dividendPercentageList.add(String.valueOf(i) + "%");
+        Data data2 = new Data.Builder()
+                .putString("username", username)
+                .putString("symbol", stock_id)
+                .build();
 
-                purchaseDateList.add(LocalDateTime.now().minusDays(i).toString());
-                purchasePriceList.add(String.valueOf(0.67*i) + "€");
-                purchaseValueList.add(String.valueOf(67.0*i) + "€");
-                currentValueList.add(String.valueOf(97.0*i) + "€");
-                differenceList.add(String.valueOf(2*i) + "%");
-                opStateList.add("Open");
-            }
-        }
+        OneTimeWorkRequest stockTransacitonsUserWork =
+                new OneTimeWorkRequest.Builder(StocksUserTransactionsWorker.class)
+                        .setInputData(data2)
+                        .build();
 
-        //________initialize adapters
-        horizontalAdapter = new DividenAdapter(dividendDateList, dividendValueList, dividendPercentageList);
-        verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);
 
-        //________initialize layout managers
-        mLayoutManagerHorizontal = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mLayoutManagerVertical = new LinearLayoutManager(this);
+        WorkManager.getInstance().getWorkInfoByIdLiveData(stockTransacitonsUserWork.getId())
+                .observe(StockValueActivity.this, status -> {
+                    if (status != null && status.getState().isFinished()) {
+                        String [] transacciones= String.valueOf(status).split("transactions :")[1].replace(", }","!").split("!")[0].split("],");
+                        for (String transaccion : transacciones){
+                            List<String> elementos = Arrays.asList(transaccion.replace("[", "").replace("]","").split(","));
+                            if (elementos.size()==4){
+                                System.out.println("Dividendo");
+                                dividendDateList.add(elementos.get(0));
+                                dividendValueList.add(elementos.get(3));
+                                dividendPercentageList.add(String.format("%.2f",1-(Float.valueOf(elementos.get(3).replaceAll("\"",""))/currentPrice))+"%");
+                            } else if (elementos.size()==8) {
+                                System.out.println("Compra");
+                                purchaseDateList.add(elementos.get(4));
+                                purchasePriceList.add(elementos.get(2));
+                                purchaseValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))));
+                                currentValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice));
+                                differenceList.add(String.format("%.2f",100.0f*(((Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice)/(Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))))-1.0f))+"%");
+                                opStateList.add("Open");
+                            }else if (elementos.size()==1){
+                                currentPrice = Float.valueOf(elementos.get(0).replaceAll("\"",""));
+                            }
+                        }
 
-        //________set layout managers
-        rvHorizontal.setLayoutManager(mLayoutManagerHorizontal);
-        rvVertical.setLayoutManager(mLayoutManagerVertical);
+                        horizontalAdapter = new DividenAdapter(dividendDateList, dividendValueList, dividendPercentageList);
+                        verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);
 
-        //________set adapters
-        rvHorizontal.setAdapter(horizontalAdapter);
-        rvVertical.setAdapter(verticalAdapter);
+                        mLayoutManagerHorizontal = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                        mLayoutManagerVertical = new LinearLayoutManager(this);
+
+                        rvHorizontal.setLayoutManager(mLayoutManagerHorizontal);
+                        rvVertical.setLayoutManager(mLayoutManagerVertical);
+
+                        rvHorizontal.setAdapter(horizontalAdapter);
+                        rvVertical.setAdapter(verticalAdapter);
+                    }
+                });
+
+        WorkManager.getInstance().enqueue(stockTransacitonsUserWork);
+
 
 
         add.setOnClickListener(new View.OnClickListener() {
@@ -334,6 +329,10 @@ public class StockValueActivity extends AppCompatActivity {
 
             volumeReportChart.setData(data);
         }
+
+
     }
+
+
 
 }

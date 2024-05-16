@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/reportingChart"
-        android:text="Dividends"
+        android:text="@string/dividends"
         android:textColor="@color/material_dynamic_primary0"
         android:textStyle="bold" />
 
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rvHorizontal"
         android:layout_marginTop="10dp"
-        android:text="Purchases"
+        android:text="@string/purchases"
         android:textColor="@color/material_dynamic_primary0"
         android:textStyle="bold" />
 

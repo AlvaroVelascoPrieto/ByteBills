@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
         WorkManager.getInstance(requireContext()).enqueue(stocksUserWork);
 
 
-        binding.resultCard.fab.setOnClickListener(new View.OnClickListener() {
+        binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddStockFragment newAddStockFragment = new AddStockFragment();

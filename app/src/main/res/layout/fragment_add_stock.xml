@@ -16,7 +16,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Add value"
+        android:text="@string/add_value"
         android:textColor="@color/white"
         android:textSize="35dp"
         android:textStyle="bold" />
@@ -31,7 +31,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="Value symbol"
+        android:text="@string/value_symbol"
         android:textColor="@color/white"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:checked="false"
             android:padding="4dp"
-            android:text="Crypto"
+            android:text="@string/crypto"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="18sp" />
@@ -70,7 +70,7 @@
             android:layout_marginRight="20dp"
             android:checked="false"
             android:padding="4dp"
-            android:text="Stock"
+            android:text="@string/stock"
             android:textColor="@color/white"
             android:textAlignment="center"
             android:textSize="18sp" />
@@ -88,7 +88,7 @@
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_info_24"
         android:drawablePadding="20dp"
-        android:hint="Value Symbol"
+        android:hint="@string/value_symbol_2"
         android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/white"
@@ -105,10 +105,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/design_default_color_secondary"
-        android:text="ADD STOCK" />
-
-
-
+        android:text="@string/add_stock" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,9 +120,6 @@
             android:layout_height="148dp"
             android:layout_margin="10dp"
             android:src="@drawable/ic_launcher"/>
-
     </LinearLayout>
-
-
 </RelativeLayout>
 

@@ -28,6 +28,8 @@ def get_crypto_symbols():
     results = df2.drop_duplicates(subset='Name', keep='first').set_index('Name').to_json()
     return results
 
+
+
 def get_stock_symbols():    
     session = HTMLSession()
     resp = session.get(f"https://finance.yahoo.com/quote/%5EIBEX/components")
@@ -48,7 +50,7 @@ def get_stock_symbols():
     results = results.replace("}},", ',')
     return results
 
-print(get_stock_symbols())
+print(get_crypto_symbols())
 
 
 

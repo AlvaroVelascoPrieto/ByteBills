@@ -4,12 +4,16 @@ import static android.app.PendingIntent.getActivity;
 import static androidx.core.content.ContentProviderCompat.requireContext;
 import static androidx.core.content.ContextCompat.startActivity;
 
+import static com.example.bytebills.Preferences.DEFAULT_LANGUAGE;
 import static com.example.bytebills.ui.stockvalue.StockValueActivity.stock_id;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
@@ -38,6 +43,7 @@ import com.example.bytebills.databinding.FragmentAddTransactionBinding;
 import com.example.bytebills.ui.login.LoginFragment;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddTransactionFragment extends AppCompatActivity {
 
@@ -46,6 +52,7 @@ public class AddTransactionFragment extends AppCompatActivity {
     private EditText dateEdt;
 
     protected void onCreate(Bundle savedInstanceState) {
+        setLocale();
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_add_transaction);
@@ -63,8 +70,6 @@ public class AddTransactionFragment extends AppCompatActivity {
                 showDatePicker(AddTransactionFragment.this);
             }
         });
-
-
 
         addTransactionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,12 +166,7 @@ public class AddTransactionFragment extends AppCompatActivity {
                 price.setHint("Price");
             }
         });
-
-
-
     }
-
-
 
     private void showDatePicker(Context context) {
         Calendar calendar = Calendar.getInstance();
@@ -184,5 +184,19 @@ public class AddTransactionFragment extends AppCompatActivity {
 
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
+    }
+
+    private void setLocale() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!preferences.contains("selected_language")) {
+            preferences.edit().putString("selected_language", DEFAULT_LANGUAGE).apply();
+        }
+        String selectedLanguage = preferences.getString("selected_language", DEFAULT_LANGUAGE);
+        Locale locale = new Locale(selectedLanguage);
+        Locale.setDefault(locale);
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 }
