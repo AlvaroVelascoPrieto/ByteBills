@@ -114,13 +114,6 @@ def get_user_stocks(data):
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response, 200
 
-@app.route('/user-dividends/<username>/<symbol>', methods=['GET'])
-def get_user_dividends(username, symbol):
-    response = db_interaction.db_get_user_dividends(username, symbol)
-    response = jsonify(response)
-    response.headers['Content-Length'] = str(len(response.get_data()))
-    return response, 200
-
 @app.route('/stock/<stock_id>', methods=['GET'])
 def get_stock(stock_id):
     res = fd.get_value_data(stock_id)

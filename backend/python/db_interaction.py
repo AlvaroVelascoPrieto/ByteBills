@@ -2,6 +2,8 @@ from flask import jsonify
 import mysql.connector
 import logging
 import utils
+import financeData
+import json
 
 #Aqui se hacen las conexiones con la BD y se devuelve el diccionario Python que indica el estado de la ejecucion SQL
 
@@ -144,21 +146,20 @@ def db_get_user_transactions(data):
     db = get_db_connection()
     cursor = db.cursor()
     try:
-        cursor.execute("SELECT * FROM stock_transaction WHERE username = %s AND stock_symbol = %s", (username, symbol))
+        cursor.execute('SELECT username, stock_symbol, price, quantity, DATE_FORMAT(buy_timestamp, "%Y %M %d"), sold, sell_price, DATE_FORMAT(sell_timestamp, "%Y %M %d") FROM stock_transaction WHERE username = %s AND stock_symbol = %s', (username, symbol))
         transactions = cursor.fetchall()
-        cursor.execute("SELECT * FROM dividend WHERE username = %s AND stock_symbol = %s", (username, symbol))
+        transactions = [list(transaction) for transaction in transactions]
+        current_values = json.loads(financeData.get_value_data(symbol))
+        current_values = [current_values[(list(current_values.keys())[-1])]]
+        transactions = [current_values] + transactions
+        cursor.execute('SELECT DATE_FORMAT(received_on, "%Y %M %d"), username, stock_symbol, value_euros FROM dividend WHERE username = %s AND stock_symbol = %s', (username, symbol))
         dividends = cursor.fetchall()
+        dividends = [list(dividend) for dividend in dividends]
         transactions += dividends
         return transactions
+
     except mysql.connector.Error as err:
         return {'status': err.msg}
-        
-def db_get_user_dividends(username, symbol):
-    db = get_db_connection()
-    cursor = db.cursor()
-    try:
-        cursor.execute("SELECT * FROM dividend WHERE username = %s AND stock_symbol = %s", (username, symbol))
-        dividends = cursor.fetchall()
-        return dividends
-    except mysql.connector.Error as err:
-        return {'status': err.msg}
+
+    except Exception as e:
+        return {'status': str(e)}
