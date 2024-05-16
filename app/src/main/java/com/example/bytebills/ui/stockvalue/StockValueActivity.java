@@ -18,7 +18,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.work.Data;
@@ -82,6 +81,9 @@ public class StockValueActivity extends AppCompatActivity {
 
     public static String stock_id;
     private Float currentPrice = 0.0f;
+    private Float totalCurrentPrice = 0f;
+    private Float totalPurchasePrice = 0f;
+    private Float totalDifference = 0f;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,11 +177,24 @@ public class StockValueActivity extends AppCompatActivity {
                                 purchaseValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))));
                                 currentValueList.add(String.format("%.2f",Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice));
                                 differenceList.add(String.format("%.2f",100.0f*(((Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice)/(Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""))))-1.0f))+"%");
+                                totalPurchasePrice += Float.valueOf(elementos.get(3).replaceAll("\"",""))*Float.valueOf(elementos.get(2).replaceAll("\"",""));
+                                totalCurrentPrice += Float.valueOf(elementos.get(3).replaceAll("\"",""))*currentPrice;
                                 opStateList.add("Open");
                             }else if (elementos.size()==1){
                                 currentPrice = Float.valueOf(elementos.get(0).replaceAll("\"",""));
                             }
                         }
+                        totalDifference = 100f*(totalCurrentPrice/totalPurchasePrice-1f);
+
+
+                        TextView differenceValueTotalView = findViewById(R.id.textViewPercentDiffValue);
+                        differenceValueTotalView.setText(String.format("%.2f", totalDifference) + "%");
+
+                        TextView totalValueView = findViewById(R.id.textViewTotalValue);
+                        totalValueView.setText(String.valueOf(totalCurrentPrice));
+
+                        TextView valueDiffValueView = findViewById(R.id.textViewValueDiffValue);
+                        valueDiffValueView.setText(String.valueOf(totalCurrentPrice - totalPurchasePrice));
 
                         horizontalAdapter = new DividenAdapter(dividendDateList, dividendValueList, dividendPercentageList);
                         verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);
