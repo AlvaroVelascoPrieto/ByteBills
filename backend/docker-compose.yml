@@ -15,6 +15,13 @@ services:
     depends_on:
       - db
     
+  fcm_messaging:
+    build:
+      context: python_fcm/
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:

@@ -45,4 +45,4 @@ CREATE TABLE IF NOT EXISTS dividend (
     PRIMARY KEY (username, received_on, stock_symbol)
 );
 
-INSERT INTO users VALUES ('admin', 'admin', 'admin')
+INSERT INTO users VALUES ('admin', 'admin', 'admin', NULL);
