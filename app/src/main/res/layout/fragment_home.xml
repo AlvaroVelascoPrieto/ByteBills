@@ -25,8 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginStart="300dp"
-                app:srcCompat="@drawable/baseline_add_24"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/baseline_g_translate_24"
                 tools:ignore="RtlHardcoded" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginStart="300dp"
+                android:layout_marginStart="270dp"
                 app:srcCompat="@drawable/baseline_add_24"
                 tools:ignore="RtlHardcoded" />
 

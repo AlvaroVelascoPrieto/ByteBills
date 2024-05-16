@@ -1,5 +1,6 @@
 package com.example.bytebills.ui.home;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.bytebills.MainActivity;
+import com.example.bytebills.Preferences;
 import com.example.bytebills.R;
 import com.example.bytebills.controller.StockInfoWorker;
 import com.example.bytebills.controller.StocksUserWorker;
@@ -99,6 +101,14 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.replace(R.id.nav_host_fragment_content_main, newAddStockFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+            }
+        });
+
+        binding.fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), Preferences.class);
+                startActivity(i);
             }
         });
 
