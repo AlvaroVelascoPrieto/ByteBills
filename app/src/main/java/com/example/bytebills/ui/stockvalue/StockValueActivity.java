@@ -187,14 +187,20 @@ public class StockValueActivity extends AppCompatActivity {
                         totalDifference = 100f*(totalCurrentPrice/totalPurchasePrice-1f);
 
 
+
                         TextView differenceValueTotalView = findViewById(R.id.textViewPercentDiffValue);
+                        if (totalDifference>0.0f){
+                            differenceValueTotalView.setTextColor(Color.parseColor("#008000"));
+                        }else{
+                            differenceValueTotalView.setTextColor(Color.parseColor("#FF1100"));
+                        }
                         differenceValueTotalView.setText(String.format("%.2f", totalDifference) + "%");
 
                         TextView totalValueView = findViewById(R.id.textViewTotalValue);
-                        totalValueView.setText(String.valueOf(totalCurrentPrice));
+                        totalValueView.setText(String.valueOf(totalCurrentPrice)+"€");
 
                         TextView valueDiffValueView = findViewById(R.id.textViewValueDiffValue);
-                        valueDiffValueView.setText(String.valueOf(totalCurrentPrice - totalPurchasePrice));
+                        valueDiffValueView.setText(String.valueOf(totalCurrentPrice - totalPurchasePrice)+"€");
 
                         horizontalAdapter = new DividenAdapter(dividendDateList, dividendValueList, dividendPercentageList);
                         verticalAdapter = new PurchaseAdapter(purchaseDateList,purchasePriceList,purchaseValueList,currentValueList,differenceList,opStateList);

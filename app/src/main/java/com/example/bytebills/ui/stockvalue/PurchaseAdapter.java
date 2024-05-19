@@ -1,6 +1,7 @@
 package com.example.bytebills.ui.stockvalue;
 
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,10 +48,15 @@ public class PurchaseAdapter extends RecyclerView.Adapter<PurchaseAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         //________set data to the objects of each row widget
         holder.tvDate.setText(purchaseDateList.get(position));
-        holder.tvPurchasePrice.setText(purchasePriceList.get(position));
-        holder.tvPurchaseValue.setText(purchaseValueList.get(position));
-        holder.tvCurrentValue.setText(currentValueList.get(position));
+        holder.tvPurchasePrice.setText(purchasePriceList.get(position)+"€");
+        holder.tvPurchaseValue.setText(purchaseValueList.get(position)+"€");
+        holder.tvCurrentValue.setText(currentValueList.get(position)+"€");
         holder.tvDifference.setText(differenceList.get(position));
+        if (Float.valueOf(differenceList.get(position).replace("%",""))>0.0f){
+            holder.tvDifference.setTextColor(Color.parseColor("#008000"));
+        }else{
+            holder.tvDifference.setTextColor(Color.parseColor("#FF1100"));
+        }
         holder.tvOperationState.setText(operationStateList.get(position));
     }
 
