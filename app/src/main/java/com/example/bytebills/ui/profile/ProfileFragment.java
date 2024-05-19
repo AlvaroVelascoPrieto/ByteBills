@@ -54,39 +54,43 @@ public class ProfileFragment extends Fragment {
         WorkManager.getInstance(requireActivity()).getWorkInfoByIdLiveData(profileWork.getId())
                 .observe(getViewLifecycleOwner(), workInfo -> {
             if (workInfo != null && workInfo.getState().isFinished()) {
-                String username = workInfo.getOutputData().getString("username");
-                String email = workInfo.getOutputData().getString("email");
-                int assetCount = workInfo.getOutputData().getInt("asset_count", 0);
-                String avgValue = workInfo.getOutputData().getString("avg_value");
-                String totalValue = workInfo.getOutputData().getString("total_value");
-                String mostCommonConglomerate = workInfo.getOutputData().getString("most_common_asset");
-                String[] top3array = workInfo.getOutputData().getStringArray("top_3_assets");
+                try {
 
-                String mostCommonAssetName = mostCommonConglomerate.split(":")[0];
-                String mostCommonAssetQty = mostCommonConglomerate.split(":")[1].split(",")[0];
-                String mostCommonAssetValue = mostCommonConglomerate.split(":")[1].split(",")[1];
+                    String username = workInfo.getOutputData().getString("username");
+                    String email = workInfo.getOutputData().getString("email");
+                    int assetCount = workInfo.getOutputData().getInt("asset_count", 0);
+                    String avgValue = workInfo.getOutputData().getString("avg_value");
+                    String totalValue = workInfo.getOutputData().getString("total_value");
+                    String mostCommonConglomerate = workInfo.getOutputData().getString("most_common_asset");
+                    String[] top3array = workInfo.getOutputData().getStringArray("top_3_assets");
 
-                String top1Name = top3array[0].split(":")[0];
-                String top2Name = top3array[1].split(":")[0];
-                String top3Name = top3array[2].split(":")[0];
+                    String mostCommonAssetName = mostCommonConglomerate.split(":")[0];
+                    String mostCommonAssetQty = mostCommonConglomerate.split(":")[1].split(",")[0];
+                    String mostCommonAssetValue = mostCommonConglomerate.split(":")[1].split(",")[1];
 
-                String top1Value = top3array[0].split(":")[1].split(",")[1];
-                String top2Value = top3array[1].split(":")[1].split(",")[1];
-                String top3Value = top3array[2].split(":")[1].split(",")[1];
+                    String top1Name = top3array[0].split(":")[0];
+                    String top2Name = top3array[1].split(":")[0];
+                    String top3Name = top3array[2].split(":")[0];
 
-                textViewUsername.setText(username);
-                textViewEmail.setText(email);
-                textViewTotalValue.setText(totalValue + "€");
-                textViewMostCommon.setText(mostCommonAssetName);
-                textViewAssetCount.setText(String.valueOf(assetCount));
+                    String top1Value = top3array[0].split(":")[1].split(",")[1];
+                    String top2Value = top3array[1].split(":")[1].split(",")[1];
+                    String top3Value = top3array[2].split(":")[1].split(",")[1];
 
-                textViewTop1Name.setText(top1Name);
-                textViewTop2Name.setText(top2Name);
-                textViewTop3Name.setText(top3Name);
-                textViewTop1Value.setText(top1Value + "€");
-                textViewTop2Value.setText(top2Value + "€");
-                textViewTop3Value.setText(top3Value + "€");
+                    textViewUsername.setText(username);
+                    textViewEmail.setText(email);
+                    textViewTotalValue.setText(totalValue + "€");
+                    textViewMostCommon.setText(mostCommonAssetName);
+                    textViewAssetCount.setText(String.valueOf(assetCount));
 
+                    textViewTop1Name.setText(top1Name);
+                    textViewTop2Name.setText(top2Name);
+                    textViewTop3Name.setText(top3Name);
+                    textViewTop1Value.setText(top1Value + "€");
+                    textViewTop2Value.setText(top2Value + "€");
+                    textViewTop3Value.setText(top3Value + "€");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         WorkManager.getInstance(requireActivity()).enqueue(profileWork);
