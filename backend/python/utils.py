@@ -25,7 +25,7 @@ def calculate_statistics(data):
         stock_symbol = list[2]
         value = price * qty
         total_value += value
-        asset_count += 1
+        asset_count += qty
         if stock_symbol in assets:
             assets[stock_symbol]['value'] += value
             assets[stock_symbol]['qty'] += qty
@@ -39,10 +39,14 @@ def calculate_statistics(data):
     # Find the most common asset
     most_common_asset = max(assets.items(), key=lambda x: x[1]['qty']) if assets else None
 
+
+
     return {
+        'username': username,
+        'email': email,
         'top_3_assets': top_3_assets,
         'total_value': total_value,
         'avg_value': avg_value,
-        'asset_count': asset_count,
+        'asset_count': len(assets),
         'most_common_asset': most_common_asset
     }

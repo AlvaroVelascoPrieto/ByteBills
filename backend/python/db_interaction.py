@@ -97,6 +97,7 @@ def db_delete_stock_user(data):
     cursor = db.cursor()
     try:
         cursor.execute("DELETE FROM stock_user WHERE username=%s AND stock_symbol=%s", (username, symbol))
+        cursor.execute("DELETE FROM stock_transaction WHERE username=%s AND stock_symbol=%s", (username, symbol))
         db.commit()
         response = {'status': 'Ok'}
         return response
@@ -120,8 +121,8 @@ def db_add_transaction_to_user(data):
     except mysql.connector.Error as err:
         return {'status': err.msg}
     
-    except:
-        return {'status': 'Error'}
+    except Exception as e:
+        return {'status': str(e)}
 
 def db_add_dividend_to_user(data):
     db = get_db_connection()
@@ -174,7 +175,7 @@ def db_get_profile(user):
         #stocks = cursor.fetchall()
         #stocks = [list(stock) for stock in stocks]
         #profile += stocks
-        cursor.execute('SELECT price, quantity, stock_symbol FROM stock_transaction WHERE username = %s AND sold = 0', (user,))
+        cursor.execute('SELECT st.price, st.quantity, s.name FROM stock_transaction AS st INNER JOIN stocks AS s ON st.stock_symbol = s.symbol WHERE st.username = %s AND st.sold = 0;', (user,))
         transactions = cursor.fetchall()
         transactions = [list(transaction) for transaction in transactions]
         profile += transactions

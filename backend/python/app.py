@@ -60,11 +60,17 @@ def get_user_tracked_stocks(username):
     try:
         cursor.execute("SELECT symbol, name FROM stocks s join stock_user su on s.symbol = su.stock_symbol WHERE su.username=%s", (username,))
         stocks = cursor.fetchall()
-        response = jsonify(stocks)
+        symbols = [(stock) + fd.get_value_session_overall(stock[0]) for stock in stocks]
+        response = jsonify(symbols)
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
     except mysql.connector.Error as err:
         response = jsonify({'status': err.msg})
+        response.headers['Content-Length'] = str(len(response.get_data()))
+        return response, 200
+    
+    except Exception as e:
+        response = jsonify({'status': str(e)})
         response.headers['Content-Length'] = str(len(response.get_data()))
         return response, 200
 
@@ -130,7 +136,7 @@ def get_crypto_symbols():
     return jsonify(res)
 
 @app.route('/stockOverall/<stock_id>', methods=['GET'])
-def get_stock(stock_id):
+def get_stock_overall(stock_id):
     res = fd.get_value_session_overall(stock_id)
     return jsonify(res)
 

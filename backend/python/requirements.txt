@@ -1,6 +1,6 @@
 Flask
 mysql-connector-python
-yfinance
+yfinance==0.2.38
 requests
 requests_html
 pandas
