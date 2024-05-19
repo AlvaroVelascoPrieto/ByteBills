@@ -54,14 +54,14 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ByteBills.NoActionBar"/>
-        <receiver android:name=".controller.StockWidgetProvider"
-            android:exported="true">
+        <receiver android:name=".controller.SimpleAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget"/>
+                android:resource="@xml/simple_app_widget_info"/>
         </receiver>
     </application>
 
