@@ -5,11 +5,17 @@ public class BillGroup {
     private String description;
     private String lastUpdateDate;
 
-    public BillGroup(int id, String title, String description, String lastUpdateDate) {
+    private String currentPrice;
+
+    private String sessionDelta;
+
+    public BillGroup(int id, String title, String description, String lastUpdateDate, String currentPrice, String sessionDelta) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.lastUpdateDate = lastUpdateDate;
+        this.currentPrice = currentPrice;
+        this.sessionDelta = sessionDelta;
     }
 
     // Getters and setters
@@ -43,5 +49,20 @@ public class BillGroup {
 
     public void setLastUpdateDate(String lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+    public String getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(String currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public String getSessionDelta() {
+        return sessionDelta;
+    }
+
+    public void setSessionDelta(String sessionDelta) {
+        this.sessionDelta = sessionDelta;
     }
 }

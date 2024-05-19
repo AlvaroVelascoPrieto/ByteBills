@@ -39,40 +39,16 @@
             android:textSize="14sp"
             android:hint="@string/last_update_date"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/buttonDeleteStock"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:text="@string/delete"
+            android:backgroundTint="#FF1100"
+            android:textColor="@android:color/white"
             android:layout_below="@id/textViewUpdateDate"
-            android:weightSum="3">
-            <TextView
-                android:id="@+id/textViewCurrentPrice"
-                android:layout_width="0dp"
-                android:layout_weight="1"                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:hint="3000.09€"/>
+            android:layout_alignParentEnd="true"/>
 
-            <TextView
-                android:id="@+id/textViewSessionDelta"
-                android:layout_width="0dp"
-                android:layout_weight="1"                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewStockId"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:hint="+2,67%"/>
-
-            <Button
-                android:id="@+id/buttonDeleteStock"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/delete"
-                android:backgroundTint="#FF1100"
-                android:textColor="@android:color/white"
-                android:layout_alignParentEnd="true"/>
-
-        </LinearLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

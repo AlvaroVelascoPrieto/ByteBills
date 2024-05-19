@@ -122,6 +122,11 @@ def get_crypto_symbols():
     res = fd.get_crypto_symbols()
     return jsonify(res)
 
+@app.route('/stockOverall/<stock_id>', methods=['GET'])
+def get_stock(stock_id):
+    res = fd.get_value_session_overall(stock_id)
+    return jsonify(res)
+
 @app.route('/', methods=['GET'])
 def hello():
     return jsonify({'message': 'Hello World'})

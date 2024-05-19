@@ -14,7 +14,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewBillGroups"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="340dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         <LinearLayout
@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:layout_marginStart="230dp"
+                android:layout_marginStart="600dp"
                 app:srcCompat="@drawable/baseline_add_24"
                 tools:ignore="RtlHardcoded" />
 

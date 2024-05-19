@@ -43,7 +43,6 @@ public class DividenAdapter extends RecyclerView.Adapter<DividenAdapter.ViewHold
         //________set data to the objects of each row widget
         holder.tvDate.setText(dividendDateList.get(position));
         holder.tvValue.setText(dividendValueList.get(position));
-        holder.tvPercentage.setText(dividendPercentageList.get(position));
     }
 
     @Override
@@ -64,7 +63,6 @@ public class DividenAdapter extends RecyclerView.Adapter<DividenAdapter.ViewHold
             //________initialize objects of each row widget
             tvDate = (TextView) view.findViewById(R.id.tvDate);
             tvValue = (TextView) view.findViewById(R.id.tvMoney);
-            tvPercentage = (TextView) view.findViewById(R.id.tvPercentage);
 
         }
     }

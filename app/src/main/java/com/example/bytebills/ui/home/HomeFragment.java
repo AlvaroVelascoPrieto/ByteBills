@@ -68,12 +68,16 @@ public class HomeFragment extends Fragment {
                 .observe(getViewLifecycleOwner(), status -> {
                     if (status != null && status.getState().isFinished()) {
                         String[] stocks = status.getOutputData().getStringArray("stocks");
-                        for (int i = 0; i < stocks.length; i = i + 2) {
-                            Log.d(TAG, stocks[i] + "   " + stocks[i + 1]);
+                        System.out.println(stocks);
+                        for (int i = 0; i < stocks.length; i = i + 4) {
+                            Log.d(TAG, stocks[i] + "   " + stocks[i + 1] + "     " + stocks[i+2] + "   " + stocks[i + 3]);
                             String title = stocks[i];
                             String description = stocks[i + 1];
+                            String openPrice = String.format("%.2f",Float.valueOf(stocks[i+2]));
+                            String closePrice = String.format("%.2f",Float.valueOf(stocks[i+3]));
+                            String sessionDelta = String.format("%.2f",100.0f*((Float.valueOf(closePrice)/Float.valueOf(openPrice))-1.0f));
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                billGroupList.add(new BillGroup(0, title, description, LocalDateTime.now().toString()));
+                                billGroupList.add(new BillGroup(0, title, description, LocalDateTime.now().toString(),closePrice+" €",sessionDelta));
                             }
 
                             // Set up RecyclerView adapter

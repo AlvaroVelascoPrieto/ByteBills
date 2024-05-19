@@ -28,8 +28,6 @@ def get_crypto_symbols():
     results = df2.drop_duplicates(subset='Name', keep='first').set_index('Name').to_json()
     return results
 
-
-
 def get_stock_symbols():    
     session = HTMLSession()
     resp = session.get(f"https://finance.yahoo.com/quote/%5EIBEX/components")
@@ -49,6 +47,12 @@ def get_stock_symbols():
     results += results2.removeprefix('{"Symbol":{')
     results = results.replace("}},", ',')
     return results
+
+def get_value_session_overall(symbol):
+    historic = yf.download(symbol, period="1d", interval="1d")
+    price = historic.loc[:,["Open","Close"]].set_index("Open")
+    print(price)
+    return price.to_json()
 
 print(get_crypto_symbols())
 
