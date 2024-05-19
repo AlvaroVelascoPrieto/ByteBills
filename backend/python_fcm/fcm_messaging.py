@@ -13,8 +13,8 @@ def send_message():
 
     message = messaging.MulticastMessage(
         notification=messaging.Notification(
-            title='Your title',
-            body='Your body text',
+            title='Comprueba tus stocks',
+            body='Descubre qué está pasando en el mercado',
         ),
         tokens=tokens,
     )
@@ -22,5 +22,6 @@ def send_message():
     response = messaging.send_multicast(message)
     print('Successfully sent message:', response)
 
-sleep(5)
-send_message()
+while 1:
+    send_message()
+    sleep(3600*12)
