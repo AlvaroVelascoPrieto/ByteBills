@@ -53,7 +53,7 @@ public class UserProfileWorker extends Worker {
                 int assetQty = assetDetails.getInt("qty");
                 String assetValue = assetDetails.getString("value");
 
-                top3Assets.add(assetName + ": qty = " + assetQty + ", value = " + assetValue);
+                top3Assets.add(assetName + ":" + assetQty + "," + assetValue);
             }
 
             Data outputData = new Data.Builder()
@@ -62,7 +62,7 @@ public class UserProfileWorker extends Worker {
                     .putInt("asset_count", assetCount)
                     .putString("avg_value", avgValue)
                     .putString("total_value", totalValue)
-                    .putString("most_common_asset", mostCommonAssetName + ": qty = " + mostCommonAssetQty + ", value = " + mostCommonAssetValue)
+                    .putString("most_common_asset", mostCommonAssetName + ":" + mostCommonAssetQty + "," + mostCommonAssetValue)
                     .putStringArray("top_3_assets", top3Assets.toArray(new String[0]))
                     .build();
 

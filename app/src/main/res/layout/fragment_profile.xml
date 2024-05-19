@@ -1,94 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp"
-    tools:context=".ui.profile.ProfileFragment">
-
-    <LinearLayout
+    tools:context=".ui.profile.ProfileFragment"
+    android:background="@color/graylight"
+    android:orientation="vertical">
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="405dp">
+        <LinearLayout
+            android:background="@drawable/gradientbackground"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_marginTop="105dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvUsername"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvEmail"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:textSize="11sp"/>
+
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="400dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="275dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total"
+                        android:textSize="20sp"
+                        />
+                    <TextView
+                        android:id="@+id/tvTotalValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/startblue"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/assetCount"
+                        android:textSize="20sp"
+                        />
+                    <TextView
+                        android:id="@+id/tvAssetCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:paddingTop="10dp"
+                        android:textColor="@color/startblue"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp"
-        android:gravity="center_horizontal">
-
-        <!-- User Info Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardElevation="4dp"
-            app:cardCornerRadius="8dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/tvUsername"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/tvEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="10sp"
-                    android:textColor="@android:color/darker_gray"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Total Value -->
-        <TextView
-            android:id="@+id/tvTotalValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingBottom="16dp"
-            android:gravity="center"/>
-
-        <!-- Statistics Section -->
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp">
         <LinearLayout
+            android:orientation="horizontal"
+            android:paddingLeft="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:weightSum="3">
 
-            <!-- Most Common Asset -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Most Common Asset:"
-                android:textSize="18sp"
                 android:textStyle="bold"
-                android:paddingBottom="8dp"/>
-            <TextView
-                android:id="@+id/tvMostCommonAsset"
+                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="16dp"/>
-
-            <!-- Top 3 Assets -->
+                android:paddingLeft="20dp"
+                android:text="@string/mostCommon"/>
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Top 3 Assets:"
-                android:textSize="18sp"
+                android:id="@+id/tvMostCommon"
                 android:textStyle="bold"
-                android:paddingBottom="8dp"/>
-
-            <LinearLayout
-                android:id="@+id/llTop3Assets"
-                android:layout_width="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
+                android:paddingLeft="20dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:paddingLeft="20dp"
+                android:layout_gravity="center_vertical"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:orientation="horizontal"
+            android:paddingLeft="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:textSize="20sp"
+                android:text="@string/top3"/>
+        </LinearLayout>
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TableRow>
+                <TextView
+                    android:id="@+id/tvTop1Name"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="45dp"
+                    android:text="BTC"/>
+                <TextView
+                    android:id="@+id/tvTop1Value"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
+                    android:text="421551€"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tvTop2Name"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="45dp"
+                    android:text="Show all comments"/>
+                <TextView
+                    android:id="@+id/tvTop2Value"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
+                    android:text="Show all comments"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:id="@+id/tvTop3Name"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="45dp"
+                    android:text="Show all comments"/>
+                <TextView
+                    android:id="@+id/tvTop3Value"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="25dp"
+                    android:text="Show all comments"/>
+            </TableRow>
+
+        </TableLayout>
+
+</LinearLayout>
