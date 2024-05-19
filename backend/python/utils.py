@@ -44,9 +44,9 @@ def calculate_statistics(data):
             'username': username,
             'email': email,
             'top_3_assets': [
-                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}],
-                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}],
-                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}]
+                ['Not enough assets', {'qty': 0, 'value': 'N/A'}],
+                ['Not enough assets', {'qty': 0, 'value': 'N/A'}],
+                ['Not enough assets', {'qty': 0, 'value': 'N/A'}]
             ],
             'total_value': total_value,
             'avg_value': avg_value,
