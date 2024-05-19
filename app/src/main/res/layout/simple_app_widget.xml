@@ -1,18 +1,152 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvWidget"
-        android:layout_width="match_parent"
+
+        <GridLayout
+            android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:background="#9C27B0"
-        android:contentDescription="Mi widget"
-        android:gravity="center"
-        android:text="valor"
-        android:textColor="#ffffff"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"/>
+        android:columnCount="2"
+        android:rowCount="4">
 
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/stock_symbol1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textBold="true"
+                android:text="TSLA"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/stock_name1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tesla"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+            <TextView
+                android:id="@+id/precio1"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="10%"
+                android:textColor="@color/green"
+                android:textSize="24sp" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stock_symbol2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textBold="true"
+                    android:text="TSLA"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/stock_name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tesla"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/precio2"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="10%"
+                android:textColor="@color/green"
+                android:textSize="24sp" />
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stock_symbol3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textBold="true"
+                    android:text="TSLA"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/stock_name3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tesla"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/precio3"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="10%"
+                android:textColor="@color/green"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stock_symbol4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textBold="true"
+                    android:text="TSLA"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/stock_name4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tesla"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/precio4"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_columnWeight="1"
+                android:gravity="center"
+                android:text="10%"
+                android:textColor="@color/green"
+                android:textSize="24sp" />
+    <!-- Repeat the above structure for the remaining 3 rows -->
+
+</GridLayout>
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_launcher" />
 </LinearLayout>
