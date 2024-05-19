@@ -24,15 +24,16 @@
                 android:textColor="#fff"
                 android:textStyle="bold"
                 android:textSize="35sp"/>
+
             <TextView
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal"
+                android:id="@+id/tvEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvEmail"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
                 android:textColor="#fff"
-                android:textStyle="bold"
-                android:textSize="11sp"/>
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
         <androidx.cardview.widget.CardView
@@ -104,6 +105,7 @@
             android:paddingLeft="25dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:weightSum="3">
 
             <TextView
@@ -112,96 +114,123 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
+                android:textColor="@color/black"
                 android:text="@string/mostCommon"/>
             <TextView
                 android:id="@+id/tvMostCommon"
                 android:textStyle="bold"
-                android:layout_gravity="center_vertical"
+                android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:paddingLeft="20dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:paddingLeft="20dp"
-                android:layout_gravity="center_vertical"/>
+                android:textColor="@color/black"
+                android:textAlignment="center"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
             android:layout_marginTop="25dp"
             android:orientation="horizontal"
-            android:paddingLeft="25dp"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="wrap_content">
 
             <TextView
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:textSize="20sp"
+                android:textSize="25sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textAlignment="center"
                 android:text="@string/top3"/>
         </LinearLayout>
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TableRow>
-                <TextView
-                    android:id="@+id/tvTop1Name"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
-                    android:text="BTC"/>
-                <TextView
-                    android:id="@+id/tvTop1Value"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="25dp"
-                    android:text="421551€"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:id="@+id/tvTop2Name"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
-                    android:text="Show all comments"/>
-                <TextView
-                    android:id="@+id/tvTop2Value"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="25dp"
-                    android:text="Show all comments"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:id="@+id/tvTop3Name"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="45dp"
-                    android:text="Show all comments"/>
-                <TextView
-                    android:id="@+id/tvTop3Value"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="25dp"
-                    android:text="Show all comments"/>
-            </TableRow>
 
-        </TableLayout>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/tvTop1Name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="BTC"
+                android:textSize="20dp"
+                android:textColor="@color/purple_700"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTop1Value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="421551€"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/tvTop2Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Show all comments"
+                android:textSize="20dp"
+                android:textColor="@color/purple_700"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTop2Value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="Show all comments"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tvTop3Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Show all comments"
+                android:textSize="20dp"
+                android:textColor="@color/purple_700"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTop3Value"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:text="Show all comments"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>

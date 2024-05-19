@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:layout_marginStart="32dp"
             android:gravity="center_vertical"
-            android:text="@string/your_stocks"
+            android:text="YOUR STOCKS"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Widget.ActionBar.Title"
             android:layout_marginLeft="32dp" />
     </LinearLayout>
