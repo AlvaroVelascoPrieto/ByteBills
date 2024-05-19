@@ -22,6 +22,7 @@ def send_message():
     response = messaging.send_multicast(message)
     print('Successfully sent message:', response)
 
+sleep(5)
 while 1:
     send_message()
     sleep(3600*12)
