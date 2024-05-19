@@ -1,15 +1,8 @@
 package com.example.bytebills.controller;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.work.Data;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.simple.JSONObject;
 
 import org.json.simple.parser.JSONParser;
@@ -20,21 +13,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.StringTokenizer;
 
 public class RemoteDBHandler {
 
-    private static String remoteServerDirection = "http://85.58.82.92:5000/";
+    private static String remoteServerDirection = "http://arostegui.org:5000/";
     //Esta es mi IP de casa y esta hosteado en mi servidor porque me era mucho mas sencillo
     //que en el puto google cloud ese pocho para hacer cambios.
     //Ya lo cambiaremos si eso.
-    private static String TAG = "RemoteDBHandler";
+    private static final String TAG = "RemoteDBHandler";
 
     public RemoteDBHandler() {
     }
@@ -42,7 +32,7 @@ public class RemoteDBHandler {
     public String post(String endpoint, @NonNull JSONObject json) {
         remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
-        HttpURLConnection conn = null;
+        HttpURLConnection conn;
 
         try {
             conn = (HttpURLConnection) new URL(remoteServerDirection).openConnection();
@@ -54,7 +44,7 @@ public class RemoteDBHandler {
             conn.setRequestProperty("Connection", "close");
 
             OutputStream out = conn.getOutputStream();
-            System.out.println(json.toString());
+            System.out.println(json);
             out.write(json.toString().getBytes());
             out.flush();
             out.close();
@@ -120,7 +110,7 @@ public class RemoteDBHandler {
         remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         Log.d(TAG, remoteServerDirection);
-        HttpURLConnection conn = null;
+        HttpURLConnection conn;
 
         try {
             String charset = "UTF-8";

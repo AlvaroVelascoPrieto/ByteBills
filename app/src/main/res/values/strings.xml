@@ -62,4 +62,8 @@
     <string name="stock">Stock</string>
     <string name="value_symbol_2">Value Symbol</string>
     <string name="add_stock">ADD STOCK</string>
+    <string name="mostCommon">Most Common Asset</string>
+    <string name="topAsset">TOP ASSET</string>
+    <string name="assetCount">ASSET COUNT</string>
+    <string name="top3">Top 3 Assets</string>
 </resources>

@@ -4,7 +4,9 @@ public class BillGroup {
     private String title;
     private String description;
     private String lastUpdateDate;
+
     private String currentPrice;
+
     private String sessionDelta;
 
     public BillGroup(int id, String title, String description, String lastUpdateDate, String currentPrice, String sessionDelta) {
@@ -47,5 +49,20 @@ public class BillGroup {
 
     public void setLastUpdateDate(String lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+    public String getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(String currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
+    public String getSessionDelta() {
+        return sessionDelta;
+    }
+
+    public void setSessionDelta(String sessionDelta) {
+        this.sessionDelta = sessionDelta;
     }
 }

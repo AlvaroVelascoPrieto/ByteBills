@@ -92,11 +92,11 @@ public class AddStockFragment extends Fragment {
                                     } catch (ParseException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    String [] values= queryStatus.replace("{", "").replace("}","").split("\",");
+                                    String [] values= queryStatus.replace("{", "").replace("}","").replaceAll("USD","EUR").split("\",");
                                     try {
                                         List<String> names = new ArrayList<String>();
                                         for (String retreivedValue : values) {
-                                            names.add(retreivedValue.split(":")[0].replace("\"", ""));
+                                            names.add(retreivedValue.split(":")[0].replace("\"", "").replaceAll("USD","EUR"));
                                         }
                                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, names);
                                         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,11 +132,11 @@ public class AddStockFragment extends Fragment {
                                     } catch (ParseException e) {
                                         throw new RuntimeException(e);
                                     }
-                                    String [] values= queryStatus.replace("{", "").replace("}","").split("\",");
+                                    String [] values= queryStatus.replace("{", "").replace("}","").replaceAll("USD", "EUR").split("\",");
                                     try {
                                         List<String> names = new ArrayList<String>();
                                         for (String retreivedValue : values) {
-                                            names.add(retreivedValue.split(":")[0].replace("\"", ""));
+                                            names.add(retreivedValue.split(":")[0].replace("\"", "").replaceAll("USD", "EUR"));
                                         }
                                         Collections.sort(names);
                                         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, names);
@@ -161,9 +161,9 @@ public class AddStockFragment extends Fragment {
                 String username = MainActivity.username;
                 if (username != null) {
                     System.out.println(symbol.getSelectedItem().toString());
-                    System.out.println(symbolJSON.get(symbol.getSelectedItem().toString()));
+                    System.out.println(symbolJSON.get(symbol.getSelectedItem().toString().replace("EUR","USD")));
                     Data data = new Data.Builder()
-                            .putString("symbol", String.valueOf(symbolJSON.get(symbol.getSelectedItem().toString())))
+                            .putString("symbol", String.valueOf(symbolJSON.get(symbol.getSelectedItem().toString().replace("EUR","USD"))).replace("USD","EUR"))
                             .putString("username", username)
                             .putString("name", symbol.getSelectedItem().toString())
                             .build();
