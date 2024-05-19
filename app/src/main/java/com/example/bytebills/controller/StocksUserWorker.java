@@ -22,7 +22,6 @@ public class StocksUserWorker extends Worker {
         super(context, workerParameters);
     }
     public Result doWork() {
-        Data data = getInputData();
 
         String usernameMA = MainActivity.username;
 

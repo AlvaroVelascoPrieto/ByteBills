@@ -58,13 +58,9 @@ public class HomeFragment extends Fragment {
         billGroupList = new ArrayList<BillGroup>();
         String username = MainActivity.username;
 
-        Data data = new Data.Builder()
-                .putString("username", username)
-                .build();
 
         OneTimeWorkRequest stocksUserWork =
                 new OneTimeWorkRequest.Builder(StocksUserWorker.class)
-                        .setInputData(data)
                         .build();
 
 
