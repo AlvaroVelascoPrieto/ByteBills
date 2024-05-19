@@ -24,6 +24,7 @@ import com.example.bytebills.MainActivity;
 import com.example.bytebills.Preferences;
 import com.example.bytebills.R;
 import com.example.bytebills.controller.StockInfoWorker;
+import com.example.bytebills.controller.StockOverallInfoWorker;
 import com.example.bytebills.controller.StocksUserWorker;
 import com.example.bytebills.databinding.FragmentHomeBinding;
 import com.example.bytebills.model.BillGroup;
@@ -76,15 +77,44 @@ public class HomeFragment extends Fragment {
                             Log.d(TAG, stocks[i] + "   " + stocks[i + 1]);
                             String title = stocks[i];
                             String description = stocks[i + 1];
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                billGroupList.add(new BillGroup(0, title, description, LocalDateTime.now().toString()));
-                            }
 
-                            // Set up RecyclerView adapter
-                            adapter = new StockAdapter(billGroupList);
-                            recyclerView.setAdapter(adapter);
+                            binding = FragmentHomeBinding.inflate(inflater, container, false);
 
-                            recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
+
+                            // Initialize RecyclerView
+                            recyclerView = binding.recyclerViewBillGroups;
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+                            billGroupList = new ArrayList<BillGroup>();
+
+                            Data data1 = new Data.Builder()
+                                    .putString("stock_id", description)
+                                    .build();
+
+                            OneTimeWorkRequest stocksOverall =
+                                    new OneTimeWorkRequest.Builder(StockOverallInfoWorker.class)
+                                            .setInputData(data1)
+                                            .build();
+
+
+                            WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(stocksUserWork.getId())
+                                    .observe(getViewLifecycleOwner(), status1 -> {
+                                        if (status1 != null && status1.getState().isFinished()) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                                String price = "300€";
+                                                String sessionDelta = "+3.98%";
+                                                billGroupList.add(new BillGroup(0, title, description, LocalDateTime.now().toString(),price, sessionDelta));
+                                            }
+
+                                            // Set up RecyclerView adapter
+                                            adapter = new StockAdapter(billGroupList);
+                                            recyclerView.setAdapter(adapter);
+
+                                            recyclerView.startAnimation(AnimationUtils.loadAnimation(recyclerView.getContext(), R.anim.scroll_animation));
+                                        }
+                                    });
+
+                            WorkManager.getInstance(requireContext()).enqueue(stocksOverall);
                         }
 
                     }

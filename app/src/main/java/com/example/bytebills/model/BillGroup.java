@@ -4,12 +4,16 @@ public class BillGroup {
     private String title;
     private String description;
     private String lastUpdateDate;
+    private String currentPrice;
+    private String sessionDelta;
 
-    public BillGroup(int id, String title, String description, String lastUpdateDate) {
+    public BillGroup(int id, String title, String description, String lastUpdateDate, String currentPrice, String sessionDelta) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.lastUpdateDate = lastUpdateDate;
+        this.currentPrice = currentPrice;
+        this.sessionDelta = sessionDelta;
     }
 
     // Getters and setters
