@@ -30,7 +30,7 @@ public class RemoteDBHandler {
     }
 
     public String post(String endpoint, @NonNull JSONObject json) {
-        remoteServerDirection = "http://arostegui.org:5000/";
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         HttpURLConnection conn;
 
@@ -107,7 +107,7 @@ public class RemoteDBHandler {
     }
 
     public static String get(String endpoint) throws ParseException {
-        remoteServerDirection = "http://arostegui.org:5000/";
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         Log.d(TAG, remoteServerDirection);
         HttpURLConnection conn;
@@ -155,7 +155,7 @@ public class RemoteDBHandler {
     }
 
     public static String get_symbols(@NonNull JSONObject json) throws ParseException {
-        remoteServerDirection = "http://arostegui.org:5000/";
+        remoteServerDirection = "http://85.58.82.92:5000/";
         json.get("symbol_type");
         remoteServerDirection += json.get("symbol_type");
         System.out.println(remoteServerDirection);
@@ -205,7 +205,7 @@ public class RemoteDBHandler {
     }
 
     public String delete(String endpoint, @NonNull JSONObject json) {
-        remoteServerDirection = "http://arostegui.org:5000/";
+        remoteServerDirection = "http://85.58.82.92:5000/";
         remoteServerDirection += endpoint;
         Log.d(TAG, "DELETE " + remoteServerDirection);
         HttpURLConnection conn = null;
