@@ -163,6 +163,29 @@ def db_get_user_transactions(data):
     except Exception as e:
         return {'status': str(e)}
         
+def db_get_profile(user):
+    db = get_db_connection()
+    cursor = db.cursor()
+    try:
+        cursor.execute('SELECT username, email FROM users WHERE username = %s', (user,))
+        profile = cursor.fetchone()
+        profile = list(profile)
+        #cursor.execute('SELECT s.symbol, s.name FROM stocks AS s INNER JOIN stock_user AS su on s.symbol = su.stock_symbol WHERE su.username = %s', (user,))
+        #stocks = cursor.fetchall()
+        #stocks = [list(stock) for stock in stocks]
+        #profile += stocks
+        cursor.execute('SELECT price, quantity, stock_symbol FROM stock_transaction WHERE username = %s AND sold = 0', (user,))
+        transactions = cursor.fetchall()
+        transactions = [list(transaction) for transaction in transactions]
+        profile += transactions
+        profile_stats = utils.calculate_statistics(profile)
+        return profile_stats
+    
+    except mysql.connector.Error as err:
+        return {'status': err.msg}
+    except Exception as e:
+        return {'status': str(e)}
+
 def db_get_all_fcm_tokens():
     db = get_db_connection()
     cursor = db.cursor()

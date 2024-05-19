@@ -107,6 +107,13 @@ def get_user_stocks(data):
     response.headers['Content-Length'] = str(len(response.get_data()))
     return response, 200
 
+@app.route('/profile/<user>', methods=['GET'])
+def get_profile(user):
+    response = db_interaction.db_get_profile(user)
+    response = jsonify(response)
+    response.headers['Content-Length'] = str(len(response.get_data()))
+    return response, 200
+
 @app.route('/stock/<stock_id>', methods=['GET'])
 def get_stock(stock_id):
     res = fd.get_value_data(stock_id)
