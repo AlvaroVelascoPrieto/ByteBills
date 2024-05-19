@@ -9,6 +9,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,8 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
         TextView textViewStockName;
         TextView textViewStockId;
         TextView textViewLastUpdateDate;
+        TextView textViewCurrentPrice;
+        TextView textViewSessionDelta;
         Button buttonDeleteStock;
 
         public BillGroupViewHolder(View itemView) {
@@ -57,6 +60,8 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
             textViewStockName = itemView.findViewById(R.id.textViewStockName);
             textViewStockId = itemView.findViewById(R.id.textViewStockId);
             textViewLastUpdateDate = itemView.findViewById(R.id.textViewUpdateDate);
+            textViewCurrentPrice = itemView.findViewById(R.id.textViewCurrentPrice);
+            textViewSessionDelta = itemView.findViewById(R.id.textViewSessionDelta);
             buttonDeleteStock = itemView.findViewById(R.id.buttonDeleteStock);
         }
     }
@@ -74,6 +79,14 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
 
         holder.textViewStockName.setText(currentBillGroup.getDescription());
         holder.textViewStockId.setText(currentBillGroup.getTitle());
+        holder.textViewCurrentPrice.setText(currentBillGroup.getCurrentPrice());
+        Boolean sessionDelta = Float.valueOf(currentBillGroup.getSessionDelta()) > 0.0f;
+        holder.textViewSessionDelta.setText(currentBillGroup.getSessionDelta() + "%");
+        if (sessionDelta){
+            holder.textViewSessionDelta.setTextColor(Color.parseColor("#008000"));
+        }else {
+            holder.textViewSessionDelta.setTextColor(Color.parseColor("#FF1100"));
+        }
 
         // Format and display the due date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -144,7 +157,6 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.BillGroupVie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Open fragment for StockDisplay
                 Intent i = new Intent(holder.itemView.getContext(), StockValueActivity.class);
                 i.putExtra("stockSymbol", holder.textViewStockId.getText());
                 startActivity(holder.itemView.getContext(),i, null);
