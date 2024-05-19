@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#D2FFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/LLTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewStockName"
+                android:layout_width="272dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:hint="@string/final_balance"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                app:srcCompat="@drawable/baseline_add_24" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/LLValueDiff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/LLTitle"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewValueDiff"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStockName"
+                android:textSize="16sp"
+                android:hint="@string/value_diff"/>
+
+            <TextView
+                android:id="@+id/textViewValueDiffValue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStockName"
+                android:textSize="16sp"
+                android:hint="@string/value_diff"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/LLPercentDiff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/LLValueDiff"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewPercentDiff"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:hint="@string/percent_diff"/>
+
+            <TextView
+                android:id="@+id/textViewPercentDiffValue"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewStockId"
+                android:textSize="16sp"
+                android:hint="+30%"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/LLPercentDiff"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/textViewTotal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:hint="@string/total"/>
+
+            <TextView
+                android:id="@+id/textViewTotalValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="1999"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
