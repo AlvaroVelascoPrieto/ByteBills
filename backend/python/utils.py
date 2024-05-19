@@ -39,7 +39,21 @@ def calculate_statistics(data):
     # Find the most common asset
     most_common_asset = max(assets.items(), key=lambda x: x[1]['qty']) if assets else 'Not enough assets'
 
-    
+    if len(top_3_assets) < 3:
+        return {
+            'username': username,
+            'email': email,
+            'top_3_assets': [
+                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}],
+                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}],
+                ['Not enough assets', {'qty': 'N/A', 'value': 'N/A'}]
+            ],
+            'total_value': total_value,
+            'avg_value': avg_value,
+            'asset_count': len(assets),
+            'most_common_asset': most_common_asset
+        }
+
     return {
         'username': username,
         'email': email,
