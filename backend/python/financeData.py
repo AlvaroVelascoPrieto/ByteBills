@@ -49,9 +49,12 @@ def get_stock_symbols():
     return results
 
 def get_value_session_overall(symbol):
-    historic = yf.download(str(symbol), period="1d", interval="1d").round(2)
-    price = tuple(historic.loc[:,["Open","Close"]].values[0])
-    return price
+    try:
+        historic = yf.download(str(symbol), period="1d", interval="1d").round(2)
+        price = tuple(historic.loc[:,["Open","Close"]].values[0])
+        return price
+    except Exception as e:
+        return (0, 0)
 
 print(get_crypto_symbols())
 
