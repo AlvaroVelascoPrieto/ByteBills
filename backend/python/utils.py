@@ -37,7 +37,7 @@ def calculate_statistics(data):
     # Calculate average value of assets
     avg_value = round(total_value / asset_count) if asset_count > 0 else 0
     # Find the most common asset
-    most_common_asset = max(assets.items(), key=lambda x: x[1]['qty']) if assets else 'Not enough assets'
+    most_common_asset = max(assets.items(), key=lambda x: x[1]['qty']) if assets else ['Not enough assets', {"qty": 0, "value": 'N/A'}]
 
     if len(top_3_assets) < 3:
         return {
